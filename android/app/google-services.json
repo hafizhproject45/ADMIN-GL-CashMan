@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "771080936325",
+    "project_id": "gl-cashman",
+    "storage_bucket": "gl-cashman.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771080936325:android:ab1bfd4a287e5ea147c2ec",
+        "android_client_info": {
+          "package_name": "com.gl.admin_gl_cashman"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlIuAYAwbhTrlHuxfQKJad7z5Z3jyoDc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771080936325:android:f52e070ef84af86847c2ec",
+        "android_client_info": {
+          "package_name": "com.gl.cashman"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlIuAYAwbhTrlHuxfQKJad7z5Z3jyoDc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
