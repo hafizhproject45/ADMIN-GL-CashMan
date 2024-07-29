@@ -15,9 +15,18 @@ class Utility {
     return formattor.format(date);
   }
 
-  /// Format date to `25 April 2024`
-  static String formatDateFromStringToDate(String dateString) {
+  /// Format date post API
+  static String formatDatePostApiOnlyDate(DateTime date) {
+    DateFormat formattor = DateFormat('yyyy-MM-dd', DATE_LOCALE);
+    return formattor.format(date);
+  }
+
+  /// Format date to `25 Apr 2024`
+  static String formatDateFromStringToDate(String? dateString) {
     try {
+      if (dateString == null) {
+        return '-';
+      }
       // Parse the date string
       DateTime date = DateTime.parse(dateString);
 
@@ -31,8 +40,12 @@ class Utility {
   }
 
   /// Format date to `13:14`
-  static String formatDateFromStringToHours(String dateString) {
+  static String formatDateFromStringToHours(String? dateString) {
     try {
+      if (dateString == null) {
+        return '-';
+      }
+
       // Parse the date string
       DateTime date = DateTime.parse(dateString);
 
@@ -108,7 +121,7 @@ class Utility {
     } else if (difference.inHours < 24) {
       return "${difference.inHours} hours ago";
     } else {
-      return '${Utility.formatDateFromStringToDate(rawDate)} - ${Utility.formatDateFromStringToHours(rawDate)} WIB';
+      return Utility.formatDateFromStringToDate(rawDate);
     }
   }
 

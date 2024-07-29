@@ -6,6 +6,7 @@ import '../../../../../core/utils/text_style.dart';
 
 class MyTextFieldPassword extends StatefulWidget {
   final String? name;
+  final double? width;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final IconData? iconz;
@@ -16,6 +17,7 @@ class MyTextFieldPassword extends StatefulWidget {
   const MyTextFieldPassword({
     super.key,
     this.name,
+    this.width = 300,
     this.focusNode,
     this.textInputAction,
     this.iconz = Icons.lock,
@@ -35,7 +37,7 @@ class _TextFieldPasswordState extends State<MyTextFieldPassword> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      width: 300,
+      width: widget.width,
       child: TextFormField(
         onFieldSubmitted: widget.onFieldSubmitted,
         cursorColor: AppColor.white,

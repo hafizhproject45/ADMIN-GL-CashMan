@@ -10,12 +10,16 @@ dependencies:
     sdk: flutter
 
   # UI Package
+  image_picker: ^1.1.1
+  dotted_border: ^2.1.0
+  image_cropper: ^7.1.0
   fluttertoast: ^8.2.4
   insta_image_viewer: ^1.0.4
   dropdown_button2: ^2.3.9
   shimmer: ^3.0.0
   flutter_spinkit: ^5.2.1
   pull_to_refresh: ^2.0.0
+  persistent_bottom_nav_bar_v2: ^4.2.8
 
   # Supabase Package
   supabase: ^2.2.4

@@ -153,8 +153,13 @@ class AppTextStyle {
   );
   static const TextStyle small = TextStyle(
     fontSize: 10,
+    fontWeight: FontWeight.w500, //REGULAR
+    color: AppColor.textHeading,
+  );
+  static const TextStyle smallThin = TextStyle(
+    fontSize: 10,
     fontWeight: FontWeight.w400, //REGULAR
-    color: Colors.white,
+    color: AppColor.textSmall,
   );
   static const TextStyle smallPrimary = TextStyle(
     fontSize: 10,

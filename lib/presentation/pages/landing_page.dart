@@ -1,136 +1,135 @@
-import 'package:admin_gl_cashman/core/utils/text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../core/utils/colors.dart';
-import '../widgets/global/button_for_grid_widget.dart';
+import '../../core/utils/images.dart';
+import '../../core/utils/text_style.dart';
+import '../../injection_container.dart';
+import '../cubit/payment/get_payment_today/get_payment_today_cubit.dart';
+import '../cubit/auth/get_all_user/get_all_user_cubit.dart';
+import '../cubit/payment/get_all_payment/get_all_payment_cubit.dart';
+import '../widgets/landing_page/analysis_container.dart';
+import '../widgets/landing_page/menu_section.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
   @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  final userCubit = sl<GetAllUserCubit>();
+  final getAllPaymentCubit = sl<GetAllPaymentCubit>();
+  final getPaymentTodayCubit = sl<GetPaymentTodayCubit>();
+
+  final RefreshController _refreshController = RefreshController();
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => userCubit..getData(),
+        ),
+        BlocProvider(
+          create: (_) => getAllPaymentCubit..getData(),
+        ),
+        BlocProvider(
+          create: (_) => getPaymentTodayCubit..getData(),
+        ),
+      ],
+      child: _content(),
+    );
+  }
+
+  Widget _content() {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg_admin.png'),
-              fit: BoxFit.cover,
+      body: SmartRefresher(
+        onRefresh: () => _onRefresh(context),
+        controller: _refreshController,
+        child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppImages.bgAdmin),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          //! ISI
-          child: Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.only(top: 300),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+            //! ISI
+            child: Stack(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.only(top: 300),
+                  decoration: BoxDecoration(
+                    color: AppColor.background,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Column(
+                    children: [
+                      SizedBox(height: 80),
+                      //? Menu Section
+                      MenuSection(),
+                    ],
+                  ),
                 ),
-                // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 250),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 70,
-                    ),
-                    const Text(
-                      'ADMIN\nGL MANAGER',
-                      style: AppTextStyle.heading,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 30),
-                    Expanded(
-                      child: GridView(
-                        padding: const EdgeInsets.all(10),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
+                //? Analysis Container
+                const AnalysisContainer(),
+
+                //? Logo GL
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 70,
+                  child: Align(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          AppImages.logoGL,
+                          height: 100,
                         ),
-                        children: const [
-                          ButtonForGridWidget(
-                            name: "Users data",
-                            route: "/dataUser",
-                            iconz: Icons.supervised_user_circle_sharp,
+                        const SizedBox(height: 10),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: const TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Admin Panel\n',
+                                style: AppTextStyle.body,
+                              ),
+                              TextSpan(
+                                text: 'GL CashMan',
+                                style: AppTextStyle.headingWhite,
+                              ),
+                            ],
                           ),
-                          ButtonForGridWidget(
-                            name: "Payment data",
-                            route: "/dataPayment",
-                            iconz: Icons.payments_sharp,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 275,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: SizedBox(
-                      height: 50,
-                      width: 200,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColor.primary,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Hari ini',
-                              style: AppTextStyle.mediumThin,
-                            ),
-                            // SizedBox(height: 10),
-                            Text(
-                              DateFormat('dd-MMM-yyyy').format(DateTime.now()),
-                              style: AppTextStyle.subHeading,
-                            )
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              const Positioned(
-                left: 0,
-                right: 0,
-                bottom: 10,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    '© Copyright 2024 by Grand Laswi, Al Right Reserved',
-                    style: AppTextStyle.mediumThin,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 100,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    height: 100,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void _onRefresh(BuildContext context) {
+    userCubit.getData();
+    getAllPaymentCubit.getData();
+    getPaymentTodayCubit.getData();
+    _refreshController.refreshCompleted();
   }
 }

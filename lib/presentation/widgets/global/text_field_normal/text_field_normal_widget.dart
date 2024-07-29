@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/colors.dart';
 import '../../../../core/utils/text_style.dart';
 
-class TextFieldNormalWidget extends StatefulWidget {
+class MyTextFieldNormal extends StatefulWidget {
   final String name;
   final TextEditingController? controller;
   final String? Function(String? value)? validator;
   final bool? isDate;
+  final bool? isBlock;
   final TextInputType? type;
   final TextInputAction? textInputAction;
   final double? width;
@@ -16,12 +17,13 @@ class TextFieldNormalWidget extends StatefulWidget {
   final IconData? iconz;
   final Color? iconColor;
 
-  const TextFieldNormalWidget({
+  const MyTextFieldNormal({
     super.key,
     required this.name,
     this.controller,
     this.validator,
     this.isDate = false,
+    this.isBlock = false,
     this.type = TextInputType.text,
     this.textInputAction,
     this.width = 300,
@@ -32,10 +34,11 @@ class TextFieldNormalWidget extends StatefulWidget {
   });
 
   @override
-  State<TextFieldNormalWidget> createState() => _TextFieldNormalWidgetState();
+  State<MyTextFieldNormal> createState() => _MyTextFieldNormalState();
 }
 
-class _TextFieldNormalWidgetState extends State<TextFieldNormalWidget> {
+class _MyTextFieldNormalState extends State<MyTextFieldNormal> {
+  String? _selectedBlock;
   DateTime? _selectedDate;
 
   Future<void> _selectMonthYear(BuildContext context) async {
@@ -65,9 +68,10 @@ class _TextFieldNormalWidgetState extends State<TextFieldNormalWidget> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              titlePadding: const EdgeInsets.only(bottom: 30, top: 20),
+              titlePadding: const EdgeInsets.only(
+                  bottom: 30, top: 20, right: 20, left: 20),
               title: const Text(
-                'Select Month and Year',
+                'Select\nMonth and Year',
                 style: AppTextStyle.subHeading,
                 textAlign: TextAlign.center,
               ),
@@ -160,6 +164,126 @@ class _TextFieldNormalWidgetState extends State<TextFieldNormalWidget> {
     );
   }
 
+  Future<void> _selectBlock(BuildContext context) async {
+    String selectedBlock = "8";
+    String selectedSuffix = "A";
+
+    List<String> blocks = [
+      "8",
+      "18",
+      "88",
+      "9",
+      "19",
+      "99",
+    ];
+
+    List<String> suffixes =
+        List<String>.generate(26, (i) => String.fromCharCode(i + 65));
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              titlePadding: const EdgeInsets.only(
+                  bottom: 30, top: 20, right: 20, left: 20),
+              title: const Text(
+                'Select\nNumber and Char Block',
+                style: AppTextStyle.subHeading,
+                textAlign: TextAlign.center,
+              ),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Block\nNumber',
+                        style: AppTextStyle.subHeadingPrimary,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButton<String>(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        dropdownColor: Colors.white,
+                        value: selectedBlock,
+                        items: blocks.map((block) {
+                          return DropdownMenuItem(
+                            alignment: Alignment.center,
+                            value: block,
+                            child: Text(block),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedBlock = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Block\nChar',
+                        style: AppTextStyle.subHeadingPrimary,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButton<String>(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        dropdownColor: Colors.white,
+                        value: selectedSuffix,
+                        items: suffixes.map((suffix) {
+                          return DropdownMenuItem(
+                            alignment: Alignment.center,
+                            value: suffix,
+                            child: Text(suffix),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedSuffix = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedBlock = "$selectedBlock $selectedSuffix";
+                      if (widget.controller != null) {
+                        widget.controller!.text = _selectedBlock!;
+                      }
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.white,
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -167,16 +291,21 @@ class _TextFieldNormalWidgetState extends State<TextFieldNormalWidget> {
       child: TextFormField(
         validator: widget.validator,
         controller: widget.controller,
-        enableInteractiveSelection: !widget.isDate!,
-        textInputAction: widget.isDate! ? null : widget.textInputAction,
-        keyboardType: widget.isDate! ? null : widget.type,
-        readOnly: widget.isDate!,
+        enableInteractiveSelection: !widget.isDate! || widget.isBlock!,
+        textInputAction:
+            widget.isDate! || widget.isBlock! ? null : widget.textInputAction,
+        keyboardType: widget.isDate! || widget.isBlock! ? null : widget.type,
+        readOnly: widget.isDate! || widget.isBlock!,
         focusNode: widget.focusNode,
         onTap: widget.isDate!
             ? () {
                 _selectMonthYear(context);
               }
-            : null,
+            : widget.isBlock!
+                ? () {
+                    _selectBlock(context);
+                  }
+                : null,
         decoration: InputDecoration(
           errorStyle: const TextStyle(color: Colors.red),
           errorBorder: const OutlineInputBorder(

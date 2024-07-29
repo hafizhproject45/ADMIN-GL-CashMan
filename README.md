@@ -53,4 +53,5 @@ For build APK and share to testing team please run this command.
 
 ```BASH
 flutter build apk --split-per-abi
+# flutter build apk --obfuscate --split-debug-info -h
 ```
