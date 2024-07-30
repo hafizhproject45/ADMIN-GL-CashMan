@@ -13,10 +13,10 @@ class GetSingleUserCubit extends Cubit<GetSingleUserState> {
     required this.getSingleUserUsecase,
   }) : super(const GetSingleUserInitial());
 
-  Future<void> getData(int userId) async {
+  Future<void> getData(GetSingleUserParams params) async {
     emit(const GetSingleUserLoading());
 
-    final data = await getSingleUserUsecase.call(userId);
+    final data = await getSingleUserUsecase.call(params);
 
     data.fold(
       (l) => emit(GetSingleUserNotLoaded(message: l.message!)),

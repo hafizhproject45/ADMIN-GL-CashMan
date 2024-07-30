@@ -4,16 +4,17 @@ import 'package:get/route_manager.dart';
 
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
+import '../../../domain/entities/payment/payment_entity.dart';
 
 class PaymentCard extends StatelessWidget {
-  final int id;
+  final PaymentEntity entity;
   final String paymentDate;
   final String email;
   final String createdAt;
 
   const PaymentCard({
     super.key,
-    required this.id,
+    required this.entity,
     required this.paymentDate,
     required this.email,
     required this.createdAt,
@@ -36,7 +37,8 @@ class PaymentCard extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: () => Get.toNamed('/payment-detail/$id', arguments: id),
+        onTap: () =>
+            Get.toNamed('/payment-detail/${entity.id}', arguments: entity),
         child: ListTile(
           title: Text(
             paymentDate,

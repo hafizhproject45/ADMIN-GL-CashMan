@@ -9,7 +9,7 @@ class UserEntity extends Equatable {
   final String phone;
   final String email;
   final String? createdAt;
-  final String? updateAt;
+  final String? updatedAt;
 
   const UserEntity({
     required this.id,
@@ -19,7 +19,7 @@ class UserEntity extends Equatable {
     required this.phone,
     required this.email,
     required this.createdAt,
-    required this.updateAt,
+    required this.updatedAt,
   });
 
   @override
@@ -32,7 +32,7 @@ class UserEntity extends Equatable {
       phone,
       email,
       createdAt,
-      updateAt,
+      updatedAt,
     ];
   }
 }

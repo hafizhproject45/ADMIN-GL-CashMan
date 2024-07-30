@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../core/utils/text_style.dart';
+import '../../../domain/entities/faq/faq_entity.dart';
 
 class QuestionContainerWidget extends StatelessWidget {
+  final FaqEntity entity;
   final String question;
   final String answer;
-  final int id;
 
   const QuestionContainerWidget({
+    required this.entity,
     required this.question,
     required this.answer,
-    required this.id,
     super.key,
   });
 
@@ -37,7 +38,8 @@ class QuestionContainerWidget extends StatelessWidget {
           ],
         ),
         child: InkWell(
-          onTap: () => Get.toNamed('/faq-detail/$id', arguments: id),
+          onTap: () =>
+              Get.toNamed('/faq-detail/${entity.id}', arguments: entity),
           child: ListTile(
             leading: const Icon(Icons.question_answer),
             subtitle: Text(

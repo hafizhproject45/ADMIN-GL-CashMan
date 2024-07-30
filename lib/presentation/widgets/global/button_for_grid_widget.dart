@@ -49,10 +49,10 @@ class ButtonForGridWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           SizedBox(
-            width: 100,
+            width: 90,
             child: Text(
               name,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: AppTextStyle.medium,

@@ -77,9 +77,9 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getAllUser() async {
+  Future<Either<Failure, List<UserEntity>>> getAllUser({String? select}) async {
     try {
-      final data = await authDataSource.getAllUser();
+      final data = await authDataSource.getAllUser(select: select);
 
       return Right(data);
     } catch (e) {
@@ -88,9 +88,10 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> getSingleUser(int userId) async {
+  Future<Either<Failure, UserEntity>> getSingleUser(int userId,
+      {String? select}) async {
     try {
-      final data = await authDataSource.getSingleUser(userId);
+      final data = await authDataSource.getSingleUser(userId, select: select);
 
       return Right(data);
     } catch (e) {

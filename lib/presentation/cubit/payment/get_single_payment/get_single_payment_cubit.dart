@@ -13,10 +13,10 @@ class GetSinglePaymentCubit extends Cubit<GetSinglePaymentState> {
     required this.getSinglePaymentUsecase,
   }) : super(const GetSinglePaymentInitial());
 
-  Future<void> getData(int paymentId) async {
+  Future<void> getData(GetSinglePaymentParams params) async {
     emit(const GetSinglePaymentLoading());
 
-    final data = await getSinglePaymentUsecase.call(paymentId);
+    final data = await getSinglePaymentUsecase.call(params);
 
     data.fold(
       (l) => emit(GetSinglePaymentNotLoaded(message: l.message!)),

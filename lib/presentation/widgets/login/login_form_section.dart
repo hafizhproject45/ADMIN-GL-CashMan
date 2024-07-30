@@ -56,6 +56,7 @@ class _LoginFormSectionState extends State<LoginFormSection> {
               focusNode: _emailFocusNode,
               controller: _emailController,
               textInputAction: TextInputAction.next,
+              width: screenWidth * 0.85,
               validator: (value) {
                 String pattern =
                     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
@@ -74,6 +75,7 @@ class _LoginFormSectionState extends State<LoginFormSection> {
               iconz: Icons.lock,
               controller: _passwordController,
               focusNode: _passwordFocusNode,
+              width: screenWidth * 0.85,
               validator: (value) {
                 if (value!.isEmpty) {
                   return "Password tidak boleh kosong";
@@ -89,15 +91,16 @@ class _LoginFormSectionState extends State<LoginFormSection> {
                     msg: state.message,
                   );
                 } else if (state is LoginLoggedIn) {
-                  Get.offAllNamed('/');
+                  Get.offAllNamed('/landing');
                 }
               },
               builder: (context, state) {
                 return MyButtonWidget(
                   label: 'LOGIN',
+                  width: screenWidth * 0.85,
                   onPressed: () {
-                    // _emailController.text = 'grandlaswidev@gmail.com';
-                    // _passwordController.text = 'Admin123';
+                    _emailController.text = 'grandlaswidev@gmail.com';
+                    _passwordController.text = 'Admin123';
 
                     if (state is! LoginLoading) {
                       _emailFocusNode.unfocus();

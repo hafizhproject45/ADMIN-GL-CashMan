@@ -37,32 +37,41 @@ class _LoginPageState extends State<LoginPage> {
               filterQuality: FilterQuality.high,
             ),
           ),
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+          SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.height * 0.9,
+              height: MediaQuery.of(context).size.height * 0.99,
+              child: Stack(
                 children: [
-                  Image.asset(
-                    AppImages.logoGL,
-                    width: 150,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        AppImages.logoGL,
+                        width: 150,
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 30),
-                  const LoginFormSection(),
+                  const Center(
+                    child: LoginFormSection(),
+                  ),
+                  const Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 10,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        '© Copyright 2024 by Grand Laswi, Al Right Reserved',
+                        style: AppTextStyle.smallWhite,
+                      ),
+                    ),
+                  ),
                 ],
-              ),
-            ),
-          ),
-          const Positioned(
-            left: 0,
-            right: 0,
-            bottom: 10,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                '© Copyright 2024 by Grand Laswi, Al Right Reserved',
-                style: AppTextStyle.small,
               ),
             ),
           ),

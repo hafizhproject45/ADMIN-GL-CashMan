@@ -2,6 +2,11 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart'
     as get_trans;
 
+import '../../presentation/pages/contact/detail_contact_page.dart';
+import '../../presentation/pages/contact/add_contact_page.dart';
+import '../../presentation/pages/error/not_found_page.dart';
+import '../../presentation/pages/faq/add_faq_page.dart';
+import '../../presentation/pages/login/login_page.dart';
 import '../../presentation/pages/payment/payments_page.dart';
 import '../../presentation/pages/payment/add_payment_page.dart';
 import '../../presentation/pages/admin/admin_page.dart';
@@ -16,8 +21,18 @@ import '../../presentation/pages/user/users_page.dart';
 
 class AppRoute {
   static List<GetPage> get pageRoute => [
-        GetPage<LandingPage>(
+        GetPage<NotFoundPage>(
           name: '/',
+          page: () => const NotFoundPage(),
+        ),
+        GetPage<LoginPage>(
+          name: '/login',
+          page: () => const LoginPage(),
+          transition: get_trans.Transition.fadeIn,
+          transitionDuration: const Duration(seconds: 2),
+        ),
+        GetPage<LandingPage>(
+          name: '/landing',
           page: () => const LandingPage(),
           transition: get_trans.Transition.fadeIn,
           transitionDuration: const Duration(seconds: 2),
@@ -70,6 +85,12 @@ class AppRoute {
           transition: get_trans.Transition.topLevel,
           transitionDuration: const Duration(milliseconds: 500),
         ),
+        GetPage<AddFaqPage>(
+          name: '/faq-add',
+          page: () => const AddFaqPage(),
+          transition: get_trans.Transition.topLevel,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
         GetPage<DetailFaqPage>(
           name: '/faq-detail/:id',
           page: () => const DetailFaqPage(),
@@ -77,14 +98,20 @@ class AppRoute {
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage<ContactsPage>(
-          name: '/contact',
+          name: '/contacts',
           page: () => const ContactsPage(),
           transition: get_trans.Transition.topLevel,
           transitionDuration: const Duration(milliseconds: 500),
         ),
-        GetPage<DetailFaqPage>(
+        GetPage<AddContactPage>(
+          name: '/contact-add',
+          page: () => const AddContactPage(),
+          transition: get_trans.Transition.topLevel,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage<DetailContactPage>(
           name: '/contact-detail/:id',
-          page: () => const DetailFaqPage(),
+          page: () => const DetailContactPage(),
           transition: get_trans.Transition.topLevel,
           transitionDuration: const Duration(milliseconds: 500),
         ),

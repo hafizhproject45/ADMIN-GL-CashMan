@@ -38,7 +38,7 @@ class MenuSection extends StatelessWidget {
         ),
         ButtonForGridWidget(
           name: 'Contacts',
-          route: '/contact',
+          route: '/contacts',
           iconz: Icons.phone,
         ),
         ButtonForGridWidget(

@@ -9,6 +9,7 @@ class MyTextFieldNormal extends StatefulWidget {
   final String? Function(String? value)? validator;
   final bool? isDate;
   final bool? isBlock;
+  final bool? isSearch;
   final TextInputType? type;
   final TextInputAction? textInputAction;
   final double? width;
@@ -16,6 +17,7 @@ class MyTextFieldNormal extends StatefulWidget {
   final TextStyle? nameStyle;
   final IconData? iconz;
   final Color? iconColor;
+  final void Function(String value)? onFieldSubmitted;
 
   const MyTextFieldNormal({
     super.key,
@@ -24,6 +26,7 @@ class MyTextFieldNormal extends StatefulWidget {
     this.validator,
     this.isDate = false,
     this.isBlock = false,
+    this.isSearch = false,
     this.type = TextInputType.text,
     this.textInputAction,
     this.width = 300,
@@ -31,6 +34,7 @@ class MyTextFieldNormal extends StatefulWidget {
     this.nameStyle,
     this.iconz,
     this.iconColor,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -296,6 +300,8 @@ class _MyTextFieldNormalState extends State<MyTextFieldNormal> {
             widget.isDate! || widget.isBlock! ? null : widget.textInputAction,
         keyboardType: widget.isDate! || widget.isBlock! ? null : widget.type,
         readOnly: widget.isDate! || widget.isBlock!,
+        enableSuggestions: true,
+        onFieldSubmitted: widget.onFieldSubmitted,
         focusNode: widget.focusNode,
         onTap: widget.isDate!
             ? () {
@@ -311,14 +317,25 @@ class _MyTextFieldNormalState extends State<MyTextFieldNormal> {
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
           ),
-          prefixIcon: Icon(
-            widget.iconz,
-            color: widget.iconColor ?? AppColor.white,
-          ),
+          prefixIcon: widget.isSearch!
+              ? null
+              : Icon(
+                  widget.iconz,
+                  color: widget.iconColor ?? AppColor.white,
+                ),
+          suffixIcon: widget.isSearch!
+              ? IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.search,
+                    color: AppColor.textSmall,
+                  ),
+                )
+              : null,
           hintText: widget.name,
           hintStyle: widget.nameStyle ?? AppTextStyle.bodyThinWhite,
-          border: const OutlineInputBorder(),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         ),
       ),
     );

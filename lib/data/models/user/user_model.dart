@@ -9,7 +9,7 @@ class UserModel extends UserEntity {
     required super.phone,
     required super.email,
     required super.createdAt,
-    required super.updateAt,
+    required super.updatedAt,
   });
 
   static UserModel fromJson(Map<String, dynamic> json) {
@@ -21,7 +21,7 @@ class UserModel extends UserEntity {
       phone: json['phone'] ?? '',
       email: json['email'] ?? '',
       createdAt: json['created_at'] ?? '',
-      updateAt: json['update_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
     );
   }
 }

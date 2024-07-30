@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../core/utils/colors.dart';
+import '../../../core/utils/text_style.dart';
 import '../../../domain/entities/faq/faq_entity.dart';
 import '../../../injection_container.dart';
 import '../../cubit/faq/get_faq_cubit.dart';
 import '../../widgets/faq/question_container_widget.dart';
 import '../../widgets/global/my_app_bar.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
+import '../../widgets/global/text_field_normal/text_field_normal_widget.dart';
 
 class FaqPage extends StatefulWidget {
   const FaqPage({super.key});
@@ -43,7 +47,7 @@ class _FaqPageState extends State<FaqPage> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () => Get.toNamed('/faq-add'),
               icon: const Icon(Icons.add),
             ),
           )
@@ -53,52 +57,75 @@ class _FaqPageState extends State<FaqPage> {
         onRefresh: () => _onRefresh(context),
         controller: _refreshController,
         child: SingleChildScrollView(
-          child: BlocBuilder<GetFaqCubit, GetFaqState>(
-            builder: (context, state) {
-              if (state is GetFaqLoaded) {
-                final List<FaqEntity>? data = state.data;
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: MyTextFieldNormal(
+                  name: 'Search FAQ',
+                  width: double.infinity,
+                  // focusNode: _nameFocusNode,
+                  // controller: _nameController,
+                  nameStyle: AppTextStyle.mediumPrimary,
+                  iconz: Icons.search,
+                  iconColor: AppColor.primary,
+                  isSearch: true,
+                ),
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<GetFaqCubit, GetFaqState>(
+                builder: (context, state) {
+                  if (state is GetFaqLoaded) {
+                    final List<FaqEntity>? data = state.data;
 
-                if (data == null || data.isEmpty) {
-                  return const Center(
-                    child: Text('FAQ not yet created.'),
-                  );
-                }
+                    if (data == null || data.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Text('FAQ not yet created.'),
+                      );
+                    }
 
-                return ListView.builder(
-                  padding: const EdgeInsets.all(20),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final faq = data[index];
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(20),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final faq = data[index];
 
-                    return QuestionContainerWidget(
-                      id: faq.id!,
-                      question: faq.question!,
-                      answer: faq.answer!,
+                        return QuestionContainerWidget(
+                          entity: faq,
+                          question: faq.question!,
+                          answer: faq.answer!,
+                        );
+                      },
                     );
-                  },
-                );
-              } else if (state is GetFaqLoading) {
-                return ListView.builder(
-                  padding: const EdgeInsets.all(20),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: ShimmerCustomWidget(
-                        height: 100,
-                        width: double.infinity,
-                      ),
+                  } else if (state is GetFaqLoading) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(20),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return const Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: ShimmerCustomWidget(
+                            height: 100,
+                            width: double.infinity,
+                          ),
+                        );
+                      },
                     );
-                  },
-                );
-              } else {
-                return Text(state.message!);
-              }
-            },
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Text(state.message!),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),

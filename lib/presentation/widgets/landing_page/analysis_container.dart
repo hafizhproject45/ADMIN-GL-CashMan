@@ -1,13 +1,13 @@
-import 'package:admin_gl_cashman/domain/entities/auth/user_entity.dart';
-import 'package:admin_gl_cashman/domain/entities/payment/payment_entity.dart';
-import 'package:admin_gl_cashman/presentation/cubit/auth/get_all_user/get_all_user_cubit.dart';
-import 'package:admin_gl_cashman/presentation/cubit/payment/get_all_payment/get_all_payment_cubit.dart';
-import 'package:admin_gl_cashman/presentation/cubit/payment/get_payment_today/get_payment_today_cubit.dart';
-import 'package:admin_gl_cashman/presentation/widgets/global/shimmer/my_shimmer_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/colors.dart';
+import '../../../domain/entities/auth/user_entity.dart';
+import '../../../domain/entities/payment/payment_entity.dart';
+import '../../cubit/auth/get_all_user/get_all_user_cubit.dart';
+import '../../cubit/payment/get_all_payment/get_all_payment_cubit.dart';
+import '../../cubit/payment/get_payment_today/get_payment_today_cubit.dart';
+import '../global/shimmer/my_shimmer_custom.dart';
 import 'analysis_field.dart';
 
 class AnalysisContainer extends StatelessWidget {

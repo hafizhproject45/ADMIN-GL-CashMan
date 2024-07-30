@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/text_style.dart';
+
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
@@ -18,7 +20,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AppBar(
-          title: Text(title),
+          title: Text(
+            title,
+            style: AppTextStyle.subHeadingPrimaryBold,
+          ),
           backgroundColor: Colors.white,
           leading: leading,
           actions: action,

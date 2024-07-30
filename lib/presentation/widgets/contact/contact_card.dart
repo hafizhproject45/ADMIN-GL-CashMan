@@ -4,16 +4,17 @@ import 'package:get/route_manager.dart';
 
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
+import '../../../domain/entities/contact/contact_entity.dart';
 
 class ContactCard extends StatelessWidget {
-  final int id;
+  final ContactEntity entity;
   final String name;
   final String phone;
   final String createdAt;
 
   const ContactCard({
     super.key,
-    required this.id,
+    required this.entity,
     required this.name,
     required this.phone,
     required this.createdAt,
@@ -36,7 +37,8 @@ class ContactCard extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: () => Get.toNamed('/contact-detail/$id', arguments: id),
+        onTap: () =>
+            Get.toNamed('/contact-detail/${entity.id}', arguments: entity),
         child: ListTile(
           title: Text(
             name,

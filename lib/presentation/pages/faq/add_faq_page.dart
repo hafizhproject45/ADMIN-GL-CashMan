@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-import '../../../domain/entities/faq/faq_entity.dart';
 import '../../widgets/global/my_app_bar.dart';
 
-class DetailFaqPage extends StatefulWidget {
-  const DetailFaqPage({super.key});
+class AddFaqPage extends StatefulWidget {
+  const AddFaqPage({super.key});
 
   @override
-  State<DetailFaqPage> createState() => _DetailFaqPageState();
+  State<AddFaqPage> createState() => _AddFaqPageState();
 }
 
-class _DetailFaqPageState extends State<DetailFaqPage> {
-  final FaqEntity entity = Get.arguments;
-
+class _AddFaqPageState extends State<AddFaqPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        title: 'Detail FAQ',
+        title: 'Add FAQ',
         leading: IconButton(
           onPressed: () {
             Get.back();
@@ -26,10 +23,8 @@ class _DetailFaqPageState extends State<DetailFaqPage> {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [],
-        ),
+      body: const Center(
+        child: Text('Add FAQ Page'),
       ),
     );
   }

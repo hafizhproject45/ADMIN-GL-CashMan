@@ -3,9 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'domain/usecases/contact/get_contact_usecase.dart';
-import 'domain/usecases/payment/get_images_usecase.dart';
 import 'presentation/cubit/contact/get_contact_cubit.dart';
-import 'presentation/cubit/payment/get_images/get_images_cubit.dart';
 import 'data/datasources/contact/contact_datasource.dart';
 import 'data/datasources/payment/payment_datasource.dart';
 import 'data/repositories/contact/contact_repository_impl.dart';
@@ -88,7 +86,6 @@ Future<void> initLocator() async {
   );
   sl.registerFactory(() => GetPaymentTodayCubit(getPaymentTodayUsecase: sl()));
   sl.registerFactory(() => PaymentCubit(paymentUsecase: sl()));
-  sl.registerFactory(() => GetImagesCubit(getImagesUsecase: sl()));
 
   //? FAQ
   sl.registerFactory(() => GetFaqCubit(getFaqUsecase: sl()));
@@ -122,9 +119,6 @@ Future<void> initLocator() async {
   );
   sl.registerLazySingleton(
     () => GetPaymentTodayUsecase(paymentRepository: sl()),
-  );
-  sl.registerLazySingleton(
-    () => GetImagesUsecase(paymentRepository: sl()),
   );
   sl.registerLazySingleton(
     () => PaymentUsecase(

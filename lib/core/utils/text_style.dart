@@ -27,28 +27,28 @@ class AppTextStyle {
 
   //? SUB HEADING
   static const TextStyle subHeading = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600, // MEDIUM
+    fontSize: 20,
+    fontWeight: FontWeight.w800, // MEDIUM
     color: AppColor.textHeading,
   );
   static const TextStyle subHeadingPrimary = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600, // MEDIUM
+    fontSize: 20,
+    fontWeight: FontWeight.w800, // MEDIUM
     color: AppColor.primary,
   );
   static const TextStyle subHeadingPrimaryBold = TextStyle(
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: FontWeight.w800, // MEDIUM
     color: AppColor.primary,
   );
   static const TextStyle subHeadingAccent = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600, // MEDIUM
+    fontSize: 20,
+    fontWeight: FontWeight.w800, // MEDIUM
     color: AppColor.primary,
   );
   static const TextStyle subHeadingWhite = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600, // MEDIUM
+    fontSize: 20,
+    fontWeight: FontWeight.w800, // MEDIUM
     color: Colors.white,
   );
 
@@ -155,6 +155,11 @@ class AppTextStyle {
     fontSize: 10,
     fontWeight: FontWeight.w500, //REGULAR
     color: AppColor.textHeading,
+  );
+  static const TextStyle smallWhite = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w500, //REGULAR
+    color: AppColor.white,
   );
   static const TextStyle smallThin = TextStyle(
     fontSize: 10,

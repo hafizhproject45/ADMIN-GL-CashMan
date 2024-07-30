@@ -1,6 +1,3 @@
-import 'package:admin_gl_cashman/presentation/pages/login/login_page.dart';
-
-import 'presentation/pages/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'presentation/pages/landing_page.dart';
+import 'presentation/pages/login/login_page.dart';
 import 'firebase_options.dart';
 import 'core/utils/colors.dart';
 import 'core/utils/env.dart';

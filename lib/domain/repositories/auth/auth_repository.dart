@@ -13,8 +13,9 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> login(LoginRequestEntity request);
   Future<Either<Failure, void>> logout();
 
-  Future<Either<Failure, UserEntity>> getSingleUser(int userId);
-  Future<Either<Failure, List<UserEntity>>> getAllUser();
+  Future<Either<Failure, List<UserEntity>>> getAllUser({String? select});
+  Future<Either<Failure, UserEntity>> getSingleUser(int userId,
+      {String? select});
   Future<Either<Failure, void>> updateUser(UpdateRequestEntity request);
   Future<Either<Failure, void>> deleteUser(DeleteRequestEntity request);
 }

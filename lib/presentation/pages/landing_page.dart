@@ -5,10 +5,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../core/utils/colors.dart';
 import '../../core/utils/images.dart';
 import '../../core/utils/text_style.dart';
+import '../../domain/usecases/payment/get_all_payment_usecase.dart';
 import '../../injection_container.dart';
-import '../cubit/payment/get_payment_today/get_payment_today_cubit.dart';
 import '../cubit/auth/get_all_user/get_all_user_cubit.dart';
 import '../cubit/payment/get_all_payment/get_all_payment_cubit.dart';
+import '../cubit/payment/get_payment_today/get_payment_today_cubit.dart';
 import '../widgets/landing_page/analysis_container.dart';
 import '../widgets/landing_page/menu_section.dart';
 
@@ -40,7 +41,7 @@ class _LandingPageState extends State<LandingPage> {
           create: (_) => userCubit..getData(),
         ),
         BlocProvider(
-          create: (_) => getAllPaymentCubit..getData(),
+          create: (_) => getAllPaymentCubit..getData(GetAllPaymentParams()),
         ),
         BlocProvider(
           create: (_) => getPaymentTodayCubit..getData(),
@@ -128,7 +129,7 @@ class _LandingPageState extends State<LandingPage> {
 
   void _onRefresh(BuildContext context) {
     userCubit.getData();
-    getAllPaymentCubit.getData();
+    getAllPaymentCubit.getData(GetAllPaymentParams());
     getPaymentTodayCubit.getData();
     _refreshController.refreshCompleted();
   }

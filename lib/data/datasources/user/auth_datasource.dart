@@ -18,8 +18,8 @@ abstract class AuthDataSource {
   Future<void> login(LoginRequestEntity request);
   Future<void> logout();
 
-  Future<UserEntity> getSingleUser(int userId);
-  Future<List<UserEntity>> getAllUser();
+  Future<List<UserEntity>> getAllUser({String? select});
+  Future<UserEntity> getSingleUser(int userId, {String? select});
   Future<void> updateUser(UpdateRequestEntity request);
   Future<void> deleteUser(DeleteRequestEntity request);
 }
@@ -99,23 +99,27 @@ class AuthDataSourceImpl extends AuthDataSource {
   }
 
   @override
-  Future<UserEntity> getSingleUser(int userId) async {
+  Future<List<UserEntity>> getAllUser({String? select}) async {
     try {
       final res =
-          await supabase.from('users').select().eq('id', userId).single();
+          await supabase.from('users').select(select ?? '*').neq('id', 0);
 
-      return UserModel.fromJson(res);
+      return res.map((e) => UserModel.fromJson(e)).toList();
     } catch (e) {
       return _handleException(e);
     }
   }
 
   @override
-  Future<List<UserEntity>> getAllUser() async {
+  Future<UserEntity> getSingleUser(int userId, {String? select}) async {
     try {
-      final res = await supabase.from('users').select().neq('id', 0);
+      final res = await supabase
+          .from('users')
+          .select(select ?? '*')
+          .eq('id', userId)
+          .single();
 
-      return res.map((e) => UserModel.fromJson(e)).toList();
+      return UserModel.fromJson(res);
     } catch (e) {
       return _handleException(e);
     }
