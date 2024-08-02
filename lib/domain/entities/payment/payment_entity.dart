@@ -6,6 +6,7 @@ class PaymentEntity extends Equatable {
   final int? userId;
   final String? imageUrl;
   final String? imageName;
+  final int? imageSize;
   final String? paymentDate;
   final String? createdAt;
   final String? updatedAt;
@@ -15,6 +16,7 @@ class PaymentEntity extends Equatable {
     this.userId,
     this.imageUrl,
     this.imageName,
+    this.imageSize,
     this.paymentDate,
     this.createdAt,
     this.updatedAt,
@@ -25,6 +27,7 @@ class PaymentEntity extends Equatable {
       'user_id': userId,
       'image_url': imageUrl,
       'image_name': imageName,
+      'image_size': imageSize,
       'payment_date': paymentDate,
       'created_at': createdAt,
       'updated_at': updatedAt,
@@ -38,6 +41,7 @@ class PaymentEntity extends Equatable {
       userId,
       imageUrl,
       imageName,
+      imageSize,
       paymentDate,
       createdAt,
       updatedAt,

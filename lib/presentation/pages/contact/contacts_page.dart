@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -9,7 +11,7 @@ import '../../../core/utils/utility.dart';
 import '../../../core/utils/text_style.dart';
 import '../../../domain/entities/contact/contact_entity.dart';
 import '../../../injection_container.dart';
-import '../../cubit/contact/get_contact_cubit.dart';
+import '../../cubit/contact/get_contact/get_contact_cubit.dart';
 import '../../widgets/global/my_app_bar.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
 import '../../widgets/global/text_field_normal/text_field_normal_widget.dart';
@@ -24,10 +26,17 @@ class ContactsPage extends StatefulWidget {
 class _ContactsPageState extends State<ContactsPage> {
   final contactCubit = sl<GetContactCubit>();
 
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+
   final RefreshController _refreshController = RefreshController();
+
+  String? searchText;
 
   @override
   void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     _refreshController.dispose();
     super.dispose();
   }
@@ -48,7 +57,13 @@ class _ContactsPageState extends State<ContactsPage> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () => Get.toNamed('/contact-add'),
+              onPressed: () async {
+                final result = Get.toNamed('/contact-add');
+                if (result == 'refresh') {
+                  await Future.delayed(const Duration(seconds: 1));
+                  _onRefresh(context);
+                }
+              },
               icon: const Icon(Icons.add),
             ),
           )
@@ -61,17 +76,22 @@ class _ContactsPageState extends State<ContactsPage> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: MyTextFieldNormal(
                   name: 'Search Contact',
                   width: double.infinity,
-                  // focusNode: _nameFocusNode,
-                  // controller: _nameController,
+                  focusNode: _searchFocusNode,
+                  controller: _searchController,
                   nameStyle: AppTextStyle.mediumPrimary,
                   iconz: Icons.search,
                   iconColor: AppColor.primary,
-                  isSearch: true,
+                  onChanged: (text) {
+                    searchText = text;
+                    contactCubit.getData(
+                      search: searchText,
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 10),
@@ -84,8 +104,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       return const Padding(
                         padding: EdgeInsets.only(top: 50),
                         child: Text(
-                          'Phone is empty',
-                          textAlign: TextAlign.center,
+                          'Phone not found!',
                           style: AppTextStyle.mediumThin,
                         ),
                       );

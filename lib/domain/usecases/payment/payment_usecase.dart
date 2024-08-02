@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../../core/utils/params/payment_params.dart';
+import '../../../core/params/payment/payment_params.dart';
 import '../../entities/payment/payment_entity.dart';
 import '../../repositories/auth/auth_repository.dart';
 import '../../repositories/payment/payment_repository.dart';

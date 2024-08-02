@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../../core/params/payment/get_all_payment_params.dart';
 import '../../entities/payment/payment_entity.dart';
 import '../../repositories/payment/payment_repository.dart';
 
@@ -27,14 +28,4 @@ class GetAllPaymentUsecase
       (r) => Right(r),
     );
   }
-}
-
-class GetAllPaymentParams {
-  final int? userId;
-  final String? select;
-
-  GetAllPaymentParams({
-    this.userId,
-    this.select = '*',
-  });
 }

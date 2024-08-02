@@ -57,7 +57,10 @@ class _UserHistoryPaymentSectionState extends State<UserHistoryPaymentSection> {
                 return const Padding(
                   padding: EdgeInsets.only(top: 50),
                   child: Center(
-                    child: Text('No History Payments'),
+                    child: Text(
+                      'No History Payments',
+                      style: AppTextStyle.mediumThin,
+                    ),
                   ),
                 );
               }

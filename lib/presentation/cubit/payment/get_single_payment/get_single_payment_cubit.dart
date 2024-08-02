@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/params/payment/get_single_payment_params.dart';
 import '../../../../domain/entities/payment/payment_entity.dart';
 import '../../../../domain/usecases/payment/get_single_payment_usecase.dart';
 

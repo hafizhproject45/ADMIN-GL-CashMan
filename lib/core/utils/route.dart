@@ -6,7 +6,7 @@ import '../../presentation/pages/contact/detail_contact_page.dart';
 import '../../presentation/pages/contact/add_contact_page.dart';
 import '../../presentation/pages/error/not_found_page.dart';
 import '../../presentation/pages/faq/add_faq_page.dart';
-import '../../presentation/pages/login/login_page.dart';
+import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/payment/payments_page.dart';
 import '../../presentation/pages/payment/add_payment_page.dart';
 import '../../presentation/pages/admin/admin_page.dart';

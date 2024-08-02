@@ -7,7 +7,7 @@ import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
 import '../../../domain/entities/faq/faq_entity.dart';
 import '../../../injection_container.dart';
-import '../../cubit/faq/get_faq_cubit.dart';
+import '../../cubit/faq/get_faq/get_faq_cubit.dart';
 import '../../widgets/faq/question_container_widget.dart';
 import '../../widgets/global/my_app_bar.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
@@ -70,7 +70,6 @@ class _FaqPageState extends State<FaqPage> {
                   nameStyle: AppTextStyle.mediumPrimary,
                   iconz: Icons.search,
                   iconColor: AppColor.primary,
-                  isSearch: true,
                 ),
               ),
               const SizedBox(height: 10),
@@ -82,7 +81,10 @@ class _FaqPageState extends State<FaqPage> {
                     if (data == null || data.isEmpty) {
                       return const Padding(
                         padding: EdgeInsets.only(top: 50),
-                        child: Text('FAQ not yet created.'),
+                        child: Text(
+                          'FAQ not found!',
+                          style: AppTextStyle.mediumThin,
+                        ),
                       );
                     }
 

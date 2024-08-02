@@ -156,6 +156,34 @@ class Utility {
     return double.parse(formattedString);
   }
 
+  static String convertPhone(String? phoneNumber) {
+    if (phoneNumber == null) {
+      return '-';
+    }
+
+    if (phoneNumber.startsWith("0")) {
+      return "+62${phoneNumber.substring(1)}";
+    } else {
+      return phoneNumber;
+    }
+  }
+
+  // Fungsi untuk mengonversi bytes ke kilobytes
+  static double convertBytesToKilobytes(int bytes) {
+    return bytes / 1024; // 1 KB = 1024 bytes
+  }
+
+  // Fungsi untuk mengonversi bytes ke gigabytes
+  static double convertBytesToGigabytes(int bytes) {
+    return bytes / (1024 * 1024 * 1024); // 1 GB = 1024^3 bytes
+  }
+
+  // Fungsi untuk menghitung persentase dari kapasitas maksimum (jika dibutuhkan)
+  static double calculatePercentageUsed(int bytes, double maxCapacityGB) {
+    double totalGigabytes = convertBytesToGigabytes(bytes);
+    return (totalGigabytes / maxCapacityGB) * 100;
+  }
+
   /// Remote Tag HTML
   static String removeHtmlTags(String htmlText) {
     // Membuat sebuah regex untuk mencocokkan semua tag HTML

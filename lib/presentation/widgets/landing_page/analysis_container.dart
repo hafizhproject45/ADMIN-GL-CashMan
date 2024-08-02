@@ -50,6 +50,7 @@ class AnalysisContainer extends StatelessWidget {
                       title: 'Total Payment',
                       value: '${payment?.length ?? 0}',
                       iconz: Icons.payment,
+                      route: '/payments',
                     );
                   } else if (state is GetAllPaymentLoading) {
                     return const Column(
@@ -87,6 +88,7 @@ class AnalysisContainer extends StatelessWidget {
                       title: 'Payment Today',
                       value: '${payment?.length ?? 0}',
                       iconz: Icons.today,
+                      route: '/payments',
                     );
                   } else if (state is GetPaymentTodayLoading) {
                     return const Column(
@@ -125,6 +127,7 @@ class AnalysisContainer extends StatelessWidget {
                       value: '${user?.length ?? 0}',
                       iconz: Icons.person,
                       padding: 10,
+                      route: '/users',
                     );
                   } else if (state is GetAllUserLoading) {
                     return const Padding(

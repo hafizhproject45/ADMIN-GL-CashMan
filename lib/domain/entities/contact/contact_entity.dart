@@ -16,6 +16,15 @@ class ContactEntity extends Equatable {
     this.updatedAt,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'phone': phone,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+
   @override
   List<Object?> get props {
     return [

@@ -6,10 +6,10 @@ import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../core/utils/colors.dart';
+import '../../../core/params/payment/get_all_payment_params.dart';
 import '../../../core/utils/text_style.dart';
 import '../../../core/utils/utility.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
-import '../../../domain/usecases/payment/get_all_payment_usecase.dart';
 import '../../../injection_container.dart';
 import '../../cubit/payment/get_all_payment/get_all_payment_cubit.dart';
 import '../../widgets/global/my_app_bar.dart';
@@ -26,10 +26,16 @@ class PaymentsPage extends StatefulWidget {
 
 class _PaymentsPageState extends State<PaymentsPage> {
   final getAllPaymentCubit = sl<GetAllPaymentCubit>();
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+
   final RefreshController _refreshController = RefreshController();
+  String? searchText;
 
   @override
   void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     _refreshController.dispose();
     super.dispose();
   }
@@ -75,17 +81,23 @@ class _PaymentsPageState extends State<PaymentsPage> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: MyTextFieldNormal(
                   name: 'Search Payment',
                   width: double.infinity,
-                  // focusNode: _nameFocusNode,
-                  // controller: _nameController,
+                  focusNode: _searchFocusNode,
+                  controller: _searchController,
                   nameStyle: AppTextStyle.mediumPrimary,
                   iconz: Icons.search,
                   iconColor: AppColor.primary,
-                  isSearch: true,
+                  onChanged: (text) {
+                    searchText = text;
+                    getAllPaymentCubit.getData(
+                      GetAllPaymentParams(),
+                      search: searchText,
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 10),
@@ -97,7 +109,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     if (payments == null || payments.isEmpty) {
                       return const Padding(
                         padding: EdgeInsets.only(top: 50),
-                        child: Text('Payment is empty'),
+                        child: Text(
+                          'Payment not found!',
+                          style: AppTextStyle.mediumThin,
+                        ),
                       );
                     }
 
@@ -149,6 +164,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   void _onRefresh(BuildContext context) {
+    _searchController.clear();
+    _searchFocusNode.unfocus;
     getAllPaymentCubit.getData(GetAllPaymentParams());
     _refreshController.refreshCompleted();
   }

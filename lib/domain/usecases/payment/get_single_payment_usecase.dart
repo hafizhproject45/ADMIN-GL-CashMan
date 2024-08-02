@@ -2,6 +2,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
+import '../../../core/params/payment/get_single_payment_params.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../entities/payment/payment_entity.dart';
 import '../../repositories/payment/payment_repository.dart';
@@ -27,14 +28,4 @@ class GetSinglePaymentUsecase
       (r) => Right(r),
     );
   }
-}
-
-class GetSinglePaymentParams {
-  final int userId;
-  final String? select;
-
-  GetSinglePaymentParams({
-    required this.userId,
-    this.select = '*',
-  });
 }

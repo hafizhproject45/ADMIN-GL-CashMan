@@ -48,6 +48,7 @@ class PaymentDatasourceImpl extends PaymentDatasource {
               userId: request.userId,
               imageUrl: imageUrl,
               imageName: imageName,
+              imageSize: imageSize,
               paymentDate: request.paymentDate,
               createdAt: request.createdAt,
               updatedAt: request.updatedAt,
@@ -57,6 +58,7 @@ class PaymentDatasourceImpl extends PaymentDatasource {
       return _handleException(e);
     } finally {
       selectedImage = null;
+      imageSize = 0;
     }
   }
 

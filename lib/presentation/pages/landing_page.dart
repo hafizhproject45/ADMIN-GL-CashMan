@@ -4,8 +4,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../core/utils/colors.dart';
 import '../../core/utils/images.dart';
+import '../../core/params/payment/get_all_payment_params.dart';
 import '../../core/utils/text_style.dart';
-import '../../domain/usecases/payment/get_all_payment_usecase.dart';
 import '../../injection_container.dart';
 import '../cubit/auth/get_all_user/get_all_user_cubit.dart';
 import '../cubit/payment/get_all_payment/get_all_payment_cubit.dart';

@@ -9,7 +9,7 @@ import '../../../core/utils/text_style.dart';
 import '../../../core/utils/toast.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
 import '../../../injection_container.dart';
-import '../../../core/utils/params/payment_params.dart';
+import '../../../core/params/payment/payment_params.dart';
 import '../../cubit/payment/payment/payment_cubit.dart';
 import '../../widgets/global/button/my_button_widget.dart';
 import '../../widgets/global/imagePicker_widget.dart';
@@ -67,7 +67,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 30),
+        padding: const EdgeInsets.all(30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -75,7 +75,6 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
                   MyTextFieldNormal(
                     name: 'Payer name',
                     width: 310,

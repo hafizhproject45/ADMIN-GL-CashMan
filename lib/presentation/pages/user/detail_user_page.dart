@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../core/params/payment/get_all_payment_params.dart';
 import '../../../domain/entities/auth/user_entity.dart';
-import '../../../domain/usecases/payment/get_all_payment_usecase.dart';
 import '../../../injection_container.dart';
 import '../../cubit/auth/delete_user/delete_user_cubit.dart';
 import '../../cubit/payment/get_all_payment/get_all_payment_cubit.dart';

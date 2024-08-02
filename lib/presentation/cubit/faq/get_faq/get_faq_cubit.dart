@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/usecases/usecase.dart';
-import '../../../domain/entities/faq/faq_entity.dart';
-import '../../../domain/usecases/faq/get_faq_usecase.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../../domain/entities/faq/faq_entity.dart';
+import '../../../../domain/usecases/faq/get_faq_usecase.dart';
 
 part 'get_faq_state.dart';
 

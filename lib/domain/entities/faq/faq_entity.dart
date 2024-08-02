@@ -6,14 +6,25 @@ class FaqEntity extends Equatable {
   final String? question;
   final String? answer;
   final String? createdAt;
+  final String? updatedAt;
 
   const FaqEntity({
     this.id,
     this.question,
     this.answer,
     this.createdAt,
+    this.updatedAt,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'question': question,
+      'answer': answer,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+
   @override
-  List<Object?> get props => [id, question, answer, createdAt];
+  List<Object?> get props => [id, question, answer, createdAt, updatedAt];
 }

@@ -7,7 +7,7 @@ import '../../cubit/auth/login/login_cubit.dart';
 import '../../widgets/global/button/my_button_widget.dart';
 import '../../widgets/global/my_app_bar.dart';
 import '../../widgets/global/my_dialog_confirmation.dart';
-import '../login/login_page.dart';
+import '../auth/login_page.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});

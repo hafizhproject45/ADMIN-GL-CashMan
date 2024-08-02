@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/params/payment_params.dart';
+import '../../../../core/params/payment/payment_params.dart';
 import '../../../../domain/usecases/payment/payment_usecase.dart';
 
 part 'payment_state.dart';

@@ -2,6 +2,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
+import '../../../core/params/user/get_single_user_params.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../entities/auth/user_entity.dart';
 import '../../repositories/auth/auth_repository.dart';
@@ -25,14 +26,4 @@ class GetSingleUserUsecase implements UseCase<UserEntity, GetSingleUserParams> {
       (r) => Right(r),
     );
   }
-}
-
-class GetSingleUserParams {
-  final int userId;
-  final String? select;
-
-  GetSingleUserParams({
-    required this.userId,
-    this.select = '*',
-  });
 }

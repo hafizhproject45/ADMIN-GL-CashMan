@@ -6,7 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'presentation/pages/landing_page.dart';
-import 'presentation/pages/login/login_page.dart';
+import 'presentation/pages/auth/login_page.dart';
 import 'firebase_options.dart';
 import 'core/utils/colors.dart';
 import 'core/utils/env.dart';

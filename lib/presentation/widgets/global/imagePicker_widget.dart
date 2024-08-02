@@ -21,6 +21,7 @@ class ImagePickerWidget extends StatefulWidget {
 }
 
 File? selectedImage;
+int? imageSize;
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   @override
@@ -131,11 +132,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
       final File imageFile = File(pickedImage.path);
+      final int fileSize = await imageFile.length();
+      final int fileSizeInKB = fileSize ~/ 1024;
 
-      int fileSize = await imageFile.length();
-
-      if (fileSize > 500 * 1024) {
-        dangerToast(msg: 'File size max: 500kb');
+      if (fileSizeInKB > 500) {
+        dangerToast(msg: 'File size max: 500 KB');
       } else {
         final croppedImage = await ImageCropper().cropImage(
           sourcePath: imageFile.path,
@@ -159,6 +160,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         if (croppedImage != null) {
           setState(() {
             selectedImage = File(croppedImage.path);
+            imageSize = fileSize;
           });
         }
       }

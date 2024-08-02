@@ -4,12 +4,12 @@ import 'package:get/route_manager.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../core/params/user/get_single_user_params.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
 import '../../../core/utils/utility.dart';
 import '../../../domain/entities/auth/user_entity.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
-import '../../../domain/usecases/auth/get_single_user_usecase.dart';
 import '../../../injection_container.dart';
 import '../../cubit/auth/get_single_user/get_single_user_cubit.dart';
 import '../../widgets/global/my_app_bar.dart';
@@ -149,6 +149,22 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+              const SizedBox(height: 10),
+              const Text(
+                'Image size',
+                style: AppTextStyle.mediumThin,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "${Utility.convertBytesToKilobytes(entity.imageSize!).toStringAsFixed(2)} KB",
+                style: AppTextStyle.medium,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               const SizedBox(height: 20),
               Container(
                 width: double.infinity,
@@ -231,6 +247,14 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                               style: AppTextStyle.subHeading,
                             ),
                           ),
+                          user?.fullname == 'ADMIN'
+                              ? const Center(
+                                  child: Text(
+                                    'Pay from Admin',
+                                    style: AppTextStyle.mediumThin,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                           const SizedBox(height: 30),
                           const Text(
                             'Fullname',
@@ -238,7 +262,9 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            user?.fullname ?? '-',
+                            user?.fullname == 'ADMIN'
+                                ? entity.imageName!.split('_')[0].split('-')[0]
+                                : user?.fullname ?? '-',
                             style: AppTextStyle.bodyBoldPrimary,
                           ),
                           const SizedBox(height: 20),
@@ -248,7 +274,9 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            user?.block ?? '-',
+                            user?.block == '-'
+                                ? entity.imageName!.split('_')[0].split('-')[1]
+                                : user?.block ?? '-',
                             style: AppTextStyle.bodyBoldPrimary,
                           ),
                           const SizedBox(height: 20),
@@ -268,7 +296,9 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            user?.email ?? '-',
+                            user?.email == 'grandlaswidev@gmail.com'
+                                ? '-'
+                                : user?.email ?? '-',
                             style: AppTextStyle.bodyBoldPrimary,
                           ),
                         ],

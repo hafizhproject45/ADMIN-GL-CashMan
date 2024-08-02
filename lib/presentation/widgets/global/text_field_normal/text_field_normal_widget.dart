@@ -9,7 +9,6 @@ class MyTextFieldNormal extends StatefulWidget {
   final String? Function(String? value)? validator;
   final bool? isDate;
   final bool? isBlock;
-  final bool? isSearch;
   final TextInputType? type;
   final TextInputAction? textInputAction;
   final double? width;
@@ -18,6 +17,7 @@ class MyTextFieldNormal extends StatefulWidget {
   final IconData? iconz;
   final Color? iconColor;
   final void Function(String value)? onFieldSubmitted;
+  final void Function(String)? onChanged;
 
   const MyTextFieldNormal({
     super.key,
@@ -26,7 +26,6 @@ class MyTextFieldNormal extends StatefulWidget {
     this.validator,
     this.isDate = false,
     this.isBlock = false,
-    this.isSearch = false,
     this.type = TextInputType.text,
     this.textInputAction,
     this.width = 300,
@@ -35,6 +34,7 @@ class MyTextFieldNormal extends StatefulWidget {
     this.iconz,
     this.iconColor,
     this.onFieldSubmitted,
+    this.onChanged,
   });
 
   @override
@@ -302,6 +302,7 @@ class _MyTextFieldNormalState extends State<MyTextFieldNormal> {
         readOnly: widget.isDate! || widget.isBlock!,
         enableSuggestions: true,
         onFieldSubmitted: widget.onFieldSubmitted,
+        onChanged: widget.onChanged,
         focusNode: widget.focusNode,
         onTap: widget.isDate!
             ? () {
@@ -317,21 +318,10 @@ class _MyTextFieldNormalState extends State<MyTextFieldNormal> {
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
           ),
-          prefixIcon: widget.isSearch!
-              ? null
-              : Icon(
-                  widget.iconz,
-                  color: widget.iconColor ?? AppColor.white,
-                ),
-          suffixIcon: widget.isSearch!
-              ? IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.search,
-                    color: AppColor.textSmall,
-                  ),
-                )
-              : null,
+          prefixIcon: Icon(
+            widget.iconz,
+            color: widget.iconColor ?? AppColor.white,
+          ),
           hintText: widget.name,
           hintStyle: widget.nameStyle ?? AppTextStyle.bodyThinWhite,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),

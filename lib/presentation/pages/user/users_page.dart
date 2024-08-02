@@ -22,9 +22,16 @@ class UsersPage extends StatefulWidget {
 
 class _UsersPageState extends State<UsersPage> {
   final userCubit = sl<GetAllUserCubit>();
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+
   final RefreshController _refreshController = RefreshController();
+  String? searchText;
+
   @override
   void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     _refreshController.dispose();
     super.dispose();
   }
@@ -49,17 +56,20 @@ class _UsersPageState extends State<UsersPage> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: MyTextFieldNormal(
                   name: 'Search User',
                   width: double.infinity,
-                  // focusNode: _nameFocusNode,
-                  // controller: _nameController,
+                  focusNode: _searchFocusNode,
+                  controller: _searchController,
                   nameStyle: AppTextStyle.mediumPrimary,
                   iconz: Icons.search,
                   iconColor: AppColor.primary,
-                  isSearch: true,
+                  onChanged: (text) {
+                    searchText = text;
+                    userCubit.getData(search: searchText);
+                  },
                 ),
               ),
               const SizedBox(height: 10),
@@ -71,7 +81,10 @@ class _UsersPageState extends State<UsersPage> {
                     if (users == null || users.isEmpty) {
                       return const Padding(
                         padding: EdgeInsets.only(top: 50),
-                        child: Text('User is empty'),
+                        child: Text(
+                          'User not found!',
+                          style: AppTextStyle.mediumThin,
+                        ),
                       );
                     }
 
@@ -124,6 +137,8 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   void _onRefresh(BuildContext context) {
+    _searchController.clear();
+    _searchFocusNode.unfocus;
     userCubit.getData();
     _refreshController.refreshCompleted();
   }
