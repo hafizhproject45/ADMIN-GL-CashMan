@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -9,7 +11,7 @@ import '../../cubit/auth/delete_user/delete_user_cubit.dart';
 import '../global/button/my_button_widget.dart';
 import '../global/my_dialog_confirmation.dart';
 
-class UserButtonSection extends StatelessWidget {
+class UserButtonSection extends StatefulWidget {
   const UserButtonSection({
     super.key,
     required this.entity,
@@ -18,14 +20,21 @@ class UserButtonSection extends StatelessWidget {
   final UserEntity entity;
 
   @override
+  State<UserButtonSection> createState() => _UserButtonSectionState();
+}
+
+class _UserButtonSectionState extends State<UserButtonSection> {
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         MyButtonWidget(
-          onPressed: () {},
+          onPressed: () async {
+            Get.toNamed('/user-update/${widget.entity.id}',
+                arguments: widget.entity);
+          },
           width: screenWidth * 0.44,
           buttonColor: const Color.fromARGB(255, 247, 185, 0),
           child: const Row(
@@ -57,6 +66,7 @@ class UserButtonSection extends StatelessWidget {
               onPressed: () => _deleteUser(context),
               width: screenWidth * 0.44,
               buttonColor: Colors.red,
+              isLoading: state is DeleteUserLoading,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -83,10 +93,16 @@ class UserButtonSection extends StatelessWidget {
       context: context,
       builder: (_) => DialogConfirmation(
         title: 'DELETE USER',
-        text: 'Are you sure to delete user "${entity.fullname}"?',
+        text: 'Are you sure to delete user "${widget.entity.fullname}"?',
         onClick: () {
-          Get.close(1);
-          context.read<DeleteUserCubit>().delete(entity.id!, entity.authId!);
+          context
+              .read<DeleteUserCubit>()
+              .delete(widget.entity.id!, widget.entity.authId!);
+
+          Get.offNamedUntil(
+            '/users',
+            (route) => route.settings.name == '/landing',
+          );
         },
       ),
     );

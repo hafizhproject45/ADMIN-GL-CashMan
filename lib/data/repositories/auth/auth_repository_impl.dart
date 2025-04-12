@@ -1,4 +1,3 @@
-import '../../../domain/entities/auth/login_request_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:supabase/supabase.dart' as sb;
 
@@ -6,10 +5,11 @@ import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/utils/constants.dart';
 import '../../../domain/entities/auth/delete_request_entity.dart';
-import '../../../domain/entities/auth/update_request_entity.dart';
+import '../../../domain/entities/auth/login_request_entity.dart';
+import '../../../domain/entities/auth/update_user_request_entity.dart';
 import '../../../domain/entities/auth/user_entity.dart';
 import '../../../domain/repositories/auth/auth_repository.dart';
-import '../../datasources/user/auth_datasource.dart';
+import '../../datasources/auth/auth_datasource.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDataSource authDataSource;
@@ -100,7 +100,8 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateUser(UpdateRequestEntity request) async {
+  Future<Either<Failure, void>> updateUser(
+      UpdateUserRequestEntity request) async {
     try {
       final data = await authDataSource.updateUser(request);
 

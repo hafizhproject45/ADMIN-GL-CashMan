@@ -37,7 +37,7 @@ class ContactRepositoryImpl extends ContactRepository {
 
   @override
   Future<Either<Failure, void>> updateContact(
-      ContactUpdateEntity request) async {
+      UpdateContactEntity request) async {
     try {
       final res = await contactDatasource.updateContact(request);
       return Right(res);

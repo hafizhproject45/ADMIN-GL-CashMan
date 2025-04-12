@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 
+import '../../../core/params/payment/payment_params.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
 import '../../../core/utils/toast.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
 import '../../../injection_container.dart';
-import '../../../core/params/payment/payment_params.dart';
 import '../../cubit/payment/payment/payment_cubit.dart';
 import '../../widgets/global/button/my_button_widget.dart';
 import '../../widgets/global/imagePicker_widget.dart';
 import '../../widgets/global/my_app_bar.dart';
-import '../../widgets/global/text_field_normal/text_field_normal_widget.dart';
+import '../../widgets/global/text_field_normal/text_field_dropdown_widget.dart';
 
 class AddPaymentPage extends StatefulWidget {
   const AddPaymentPage({super.key});
@@ -27,9 +27,11 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _blockController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _descController = TextEditingController();
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _blockFocusNode = FocusNode();
   final FocusNode _dateFocusNode = FocusNode();
+  final FocusNode _descFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -37,9 +39,11 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     _nameController.dispose();
     _blockController.dispose();
     _dateController.dispose();
+    _descController.dispose();
     _nameFocusNode.dispose();
     _blockFocusNode.dispose();
     _dateFocusNode.dispose();
+    _descFocusNode.dispose();
     super.dispose();
   }
 
@@ -67,7 +71,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -75,8 +79,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  MyTextFieldNormal(
-                    name: 'Payer name',
+                  MyTextFieldDropdown(
+                    name: 'Payer name *',
                     width: 310,
                     focusNode: _nameFocusNode,
                     controller: _nameController,
@@ -91,8 +95,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  MyTextFieldNormal(
-                    name: 'Block',
+                  MyTextFieldDropdown(
+                    name: 'Block *',
                     width: 310,
                     focusNode: _blockFocusNode,
                     controller: _blockController,
@@ -108,8 +112,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  MyTextFieldNormal(
-                    name: 'Payment for',
+                  MyTextFieldDropdown(
+                    name: 'Payment for *',
                     width: 310,
                     focusNode: _dateFocusNode,
                     controller: _dateController,
@@ -123,6 +127,16 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                       }
                       return null;
                     },
+                  ),
+                  const SizedBox(height: 10),
+                  MyTextFieldDropdown(
+                    name: 'Description',
+                    width: 310,
+                    focusNode: _descFocusNode,
+                    controller: _descController,
+                    nameStyle: AppTextStyle.mediumPrimary,
+                    iconz: Icons.description,
+                    iconColor: AppColor.primary,
                   ),
                   const SizedBox(height: 40),
                   const ImagePickerWidget(),
@@ -154,10 +168,13 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                               await context.read<PaymentCubit>().payment(
                                     PaymentParams(
                                       paymentEntity: PaymentEntity(
-                                        paymentDate: _dateController.text,
+                                        paymentDate:
+                                            _dateController.text.trim(),
+                                        description:
+                                            _descController.text.trim(),
                                       ),
-                                      payerName: _nameController.text,
-                                      block: _blockController.text,
+                                      payerName: _nameController.text.trim(),
+                                      block: _blockController.text.trim(),
                                     ),
                                   );
                             }

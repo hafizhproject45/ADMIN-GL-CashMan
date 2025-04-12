@@ -4,6 +4,7 @@ class ContactModel extends ContactEntity {
   const ContactModel({
     super.id,
     super.name,
+    super.position,
     super.phone,
     super.createdAt,
     super.updatedAt,
@@ -13,6 +14,7 @@ class ContactModel extends ContactEntity {
     return ContactModel(
       id: json['id'],
       name: json['name'],
+      position: json['position'],
       phone: json['phone'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],

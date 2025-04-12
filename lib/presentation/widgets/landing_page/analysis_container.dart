@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/colors.dart';
+import '../../../core/utils/utility.dart';
 import '../../../domain/entities/auth/user_entity.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
 import '../../cubit/auth/get_all_user/get_all_user_cubit.dart';
@@ -89,6 +90,8 @@ class AnalysisContainer extends StatelessWidget {
                       value: '${payment?.length ?? 0}',
                       iconz: Icons.today,
                       route: '/payments',
+                      arguments:
+                          Utility.formatDatePostApiOnlyDate(DateTime.now()),
                     );
                   } else if (state is GetPaymentTodayLoading) {
                     return const Column(

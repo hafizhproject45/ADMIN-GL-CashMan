@@ -83,9 +83,9 @@ class _UserHistoryPaymentSectionState extends State<UserHistoryPaymentSection> {
 
                   return PaymentCard(
                     entity: payment,
-                    paymentDate: Utility.removeStrip(payment.paymentDate),
+                    paymentDate: payment.paymentDate!.replaceAll('-', ' | '),
                     email:
-                        Utility.removeStrip(payment.imageName!.split('_')[0]),
+                        payment.imageName!.split('_')[0].replaceAll('-', ' | '),
                     createdAt: Utility.timeAgoFormat(payment.createdAt!),
                   );
                 },

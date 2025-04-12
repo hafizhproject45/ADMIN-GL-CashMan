@@ -1,3 +1,7 @@
+// ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -11,7 +15,7 @@ import '../../cubit/faq/get_faq/get_faq_cubit.dart';
 import '../../widgets/faq/question_container_widget.dart';
 import '../../widgets/global/my_app_bar.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
-import '../../widgets/global/text_field_normal/text_field_normal_widget.dart';
+import '../../widgets/global/text_field_normal/text_field_dropdown_widget.dart';
 
 class FaqPage extends StatefulWidget {
   const FaqPage({super.key});
@@ -25,9 +29,18 @@ class _FaqPageState extends State<FaqPage> {
 
   final RefreshController _refreshController = RefreshController();
 
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+
+  Timer? _debounce;
+  String? searchText;
+
   @override
   void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     _refreshController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -43,11 +56,27 @@ class _FaqPageState extends State<FaqPage> {
     return Scaffold(
       appBar: MyAppBar(
         title: 'Frequently Asked Questions',
+        leading: IconButton(
+          onPressed: () {
+            Get.offNamedUntil(
+              '/landing',
+              (route) => route.settings.name == '/login',
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         action: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
-              onPressed: () => Get.toNamed('/faq-add'),
+              onPressed: () async {
+                final result = Get.toNamed('/faq-add');
+
+                if (result == 'refresh') {
+                  await Future.delayed(const Duration(seconds: 1));
+                  _onRefresh(context);
+                }
+              },
               icon: const Icon(Icons.add),
             ),
           )
@@ -60,16 +89,20 @@ class _FaqPageState extends State<FaqPage> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: MyTextFieldNormal(
-                  name: 'Search FAQ',
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: MyTextFieldDropdown(
+                  name: 'Search',
                   width: double.infinity,
-                  // focusNode: _nameFocusNode,
-                  // controller: _nameController,
+                  focusNode: _searchFocusNode,
+                  controller: _searchController,
                   nameStyle: AppTextStyle.mediumPrimary,
                   iconz: Icons.search,
                   iconColor: AppColor.primary,
+                  onChanged: (text) {
+                    searchText = text;
+                    _onSearchChanged(text);
+                  },
                 ),
               ),
               const SizedBox(height: 10),
@@ -98,8 +131,8 @@ class _FaqPageState extends State<FaqPage> {
 
                         return QuestionContainerWidget(
                           entity: faq,
-                          question: faq.question!,
-                          answer: faq.answer!,
+                          question: faq.question ?? '-',
+                          answer: faq.answer ?? '-',
                         );
                       },
                     );
@@ -132,6 +165,15 @@ class _FaqPageState extends State<FaqPage> {
         ),
       ),
     );
+  }
+
+  void _onSearchChanged(String text) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      getFaqCubit.getData(
+        search: text,
+      );
+    });
   }
 
   void _onRefresh(BuildContext context) {

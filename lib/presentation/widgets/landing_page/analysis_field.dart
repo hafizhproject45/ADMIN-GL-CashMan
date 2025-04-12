@@ -10,6 +10,7 @@ class AnalysisField extends StatelessWidget {
   final IconData iconz;
   final double padding;
   final String route;
+  final dynamic arguments;
 
   const AnalysisField({
     super.key,
@@ -18,6 +19,7 @@ class AnalysisField extends StatelessWidget {
     required this.iconz,
     this.padding = 0,
     required this.route,
+    this.arguments,
   });
 
   @override
@@ -25,7 +27,7 @@ class AnalysisField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding),
       child: GestureDetector(
-        onTap: () => Get.toNamed(route),
+        onTap: () => Get.toNamed(route, arguments: arguments),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -11,6 +11,7 @@ class MyTextFieldText extends StatefulWidget {
   final TextInputAction? textInputAction;
   final TextInputType? type;
   final TextStyle? nameStyle;
+  final Color cursorColor;
 
   final double? width;
   final IconData? iconz;
@@ -30,6 +31,7 @@ class MyTextFieldText extends StatefulWidget {
     this.validator,
     this.width = 300,
     this.type = TextInputType.text,
+    this.cursorColor = AppColor.primary,
   });
 
   @override
@@ -42,30 +44,38 @@ class _MyTextFieldTextState extends State<MyTextFieldText> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5),
       width: widget.width,
-      child: TextFormField(
-        validator: widget.validator,
-        cursorColor: AppColor.white,
-        controller: widget.controller,
-        focusNode: widget.focusNode,
-        textInputAction: widget.textInputAction,
-        keyboardType: widget.type,
-        style: widget.nameStyle ?? AppTextStyle.bodyThinWhite,
-        decoration: InputDecoration(
-          errorStyle: const TextStyle(color: Colors.red),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          prefixIcon: Icon(
-            widget.iconz,
-            color: widget.iconColor ?? AppColor.white,
-          ),
-          label: Text(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
             widget.name,
-            style: widget.nameStyle ?? AppTextStyle.bodyThinWhite,
+            style: AppTextStyle.mediumThin,
           ),
-          border: const OutlineInputBorder(),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        ),
+          const SizedBox(height: 5),
+          TextFormField(
+            validator: widget.validator,
+            cursorColor: widget.cursorColor,
+            controller: widget.controller,
+            focusNode: widget.focusNode,
+            textInputAction: widget.textInputAction,
+            keyboardType: widget.type,
+            style: widget.nameStyle ?? AppTextStyle.bodyThinWhite,
+            decoration: InputDecoration(
+              errorStyle: const TextStyle(color: Colors.red),
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
+              prefixIcon: Icon(
+                widget.iconz,
+                color: widget.iconColor ?? AppColor.white,
+              ),
+              hintText: widget.name,
+              hintStyle: widget.nameStyle ?? AppTextStyle.bodyThinWhite,
+              border: const OutlineInputBorder(),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+            ),
+          ),
+        ],
       ),
     );
   }

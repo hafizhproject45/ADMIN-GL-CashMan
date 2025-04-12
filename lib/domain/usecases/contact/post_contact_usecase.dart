@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import '../../entities/contact/contact_entity.dart';
-import '../../repositories/contact/contact_repository.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../entities/contact/contact_entity.dart';
+import '../../repositories/contact/contact_repository.dart';
 
 class PostContactUsecase implements UseCase<void, ContactEntity> {
   final ContactRepository contactRepository;
@@ -16,6 +16,7 @@ class PostContactUsecase implements UseCase<void, ContactEntity> {
   Future<Either<Failure, void>> call(ContactEntity request) async {
     final newContact = ContactEntity(
       name: request.name,
+      position: request.position,
       phone: request.phone,
       createdAt: DateTime.now().toIso8601String(),
       updatedAt: DateTime.now().toIso8601String(),

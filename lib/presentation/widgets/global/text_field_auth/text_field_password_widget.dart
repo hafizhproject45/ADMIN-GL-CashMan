@@ -10,6 +10,8 @@ class MyTextFieldPassword extends StatefulWidget {
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final IconData? iconz;
+  final Color? iconColor;
+  final TextStyle? textStyle;
   final TextEditingController? controller;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onFieldSubmitted;
@@ -21,6 +23,8 @@ class MyTextFieldPassword extends StatefulWidget {
     this.focusNode,
     this.textInputAction,
     this.iconz = Icons.lock,
+    this.iconColor = AppColor.primary,
+    this.textStyle = AppTextStyle.bodyThinPrimary,
     this.controller,
     this.validator,
     this.onFieldSubmitted,
@@ -40,7 +44,7 @@ class _TextFieldPasswordState extends State<MyTextFieldPassword> {
       width: widget.width,
       child: TextFormField(
         onFieldSubmitted: widget.onFieldSubmitted,
-        cursorColor: AppColor.white,
+        cursorColor: AppColor.primary,
         focusNode: widget.focusNode,
         textInputAction: widget.textInputAction,
         validator: widget.validator,
@@ -48,7 +52,7 @@ class _TextFieldPasswordState extends State<MyTextFieldPassword> {
         enableInteractiveSelection: true,
         keyboardType: TextInputType.visiblePassword,
         obscureText: _obscureText,
-        style: AppTextStyle.bodyThinWhite,
+        style: widget.textStyle,
         decoration: InputDecoration(
           errorStyle: const TextStyle(color: Colors.red),
           errorBorder: const OutlineInputBorder(
@@ -56,11 +60,11 @@ class _TextFieldPasswordState extends State<MyTextFieldPassword> {
           ),
           prefixIcon: Icon(
             widget.iconz,
-            color: AppColor.white,
+            color: widget.iconColor,
           ),
           label: Text(
             widget.name ?? 'Kata sandi',
-            style: AppTextStyle.bodyThinWhite,
+            style: widget.textStyle,
           ),
           suffixIcon: IconButton(
             onPressed: () {
@@ -70,7 +74,7 @@ class _TextFieldPasswordState extends State<MyTextFieldPassword> {
             },
             icon: Icon(
               _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: AppColor.white,
+              color: widget.iconColor,
             ),
           ),
           border: const OutlineInputBorder(),

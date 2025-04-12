@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:supabase/supabase.dart';
 
 import '../../../core/errors/exceptions.dart';
@@ -39,7 +41,8 @@ class FaqDatasourceImpl extends FaqDatasource {
   Future<void> postFaq(FaqEntity request) async {
     try {
       await supabase.from('faq').insert(request.toJson());
-    } catch (e) {
+    } catch (e, s) {
+      log('$e, $s');
       return _handleException(e);
     }
   }

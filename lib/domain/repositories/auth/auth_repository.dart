@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../core/errors/failures.dart';
 import '../../entities/auth/delete_request_entity.dart';
 import '../../entities/auth/login_request_entity.dart';
-import '../../entities/auth/update_request_entity.dart';
+import '../../entities/auth/update_user_request_entity.dart';
 import '../../entities/auth/user_entity.dart';
 
 abstract class AuthRepository {
@@ -16,6 +16,6 @@ abstract class AuthRepository {
   Future<Either<Failure, List<UserEntity>>> getAllUser({String? select});
   Future<Either<Failure, UserEntity>> getSingleUser(int userId,
       {String? select});
-  Future<Either<Failure, void>> updateUser(UpdateRequestEntity request);
+  Future<Either<Failure, void>> updateUser(UpdateUserRequestEntity request);
   Future<Either<Failure, void>> deleteUser(DeleteRequestEntity request);
 }

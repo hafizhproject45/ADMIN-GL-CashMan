@@ -7,12 +7,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/params/user/get_single_user_params.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
+import '../../../core/utils/toast.dart';
 import '../../../core/utils/utility.dart';
 import '../../../domain/entities/auth/user_entity.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
 import '../../../injection_container.dart';
 import '../../cubit/auth/get_single_user/get_single_user_cubit.dart';
+import '../../cubit/payment/delete_payment/delete_payment_cubit.dart';
+import '../../widgets/global/button/my_button_widget.dart';
 import '../../widgets/global/my_app_bar.dart';
+import '../../widgets/global/my_dialog_confirmation.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
 
 class DetailPaymentPage extends StatefulWidget {
@@ -37,14 +41,21 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => userCubit
-        ..getData(
-          GetSingleUserParams(
-            userId: entity.userId!,
-            select: 'fullname, block, phone, email',
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => userCubit
+            ..getData(
+              GetSingleUserParams(
+                userId: entity.userId!,
+                select: 'fullname, block, phone, email',
+              ),
+            ),
         ),
+        BlocProvider(
+          create: (context) => sl<DeletePaymentCubit>(),
+        ),
+      ],
       child: _content(),
     );
   }
@@ -134,36 +145,82 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                       ),
                     ),
               const SizedBox(height: 30),
-              const Text(
-                'Image name',
-                style: AppTextStyle.mediumThin,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 5),
-              Text(
-                entity.imageName!,
-                style: AppTextStyle.medium,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Image size',
-                style: AppTextStyle.mediumThin,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 5),
-              Text(
-                "${Utility.convertBytesToKilobytes(entity.imageSize!).toStringAsFixed(2)} KB",
-                style: AppTextStyle.medium,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.05),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Details',
+                        style: AppTextStyle.subHeading,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Image name',
+                      style: AppTextStyle.mediumThin,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      entity.imageName!,
+                      style: AppTextStyle.bodyBoldPrimary,
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Image size',
+                      style: AppTextStyle.mediumThin,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "${Utility.convertBytesToKilobytes(entity.imageSize!).toStringAsFixed(2)} KB",
+                      style: AppTextStyle.bodyBoldPrimary,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Description',
+                      style: AppTextStyle.mediumThin,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      entity.description == null || entity.description!.isEmpty
+                          ? '-'
+                          : entity.description!,
+                      style: AppTextStyle.bodyBoldPrimary,
+                      textAlign: TextAlign.start,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               Container(
@@ -193,7 +250,7 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          Utility.removeStrip(entity.paymentDate!),
+                          entity.paymentDate!.replaceAll('-', ' | '),
                           style: AppTextStyle.bodyBoldPrimary,
                           textAlign: TextAlign.center,
                         ),
@@ -314,9 +371,60 @@ class _DetailPaymentPageState extends State<DetailPaymentPage> {
                   }
                 },
               ),
+              const SizedBox(height: 30),
+              BlocConsumer<DeletePaymentCubit, DeletePaymentState>(
+                listener: (context, state) {
+                  if (state is DeletePaymentFailed) {
+                    dangerToast(msg: state.message);
+                  } else if (state is DeletePaymentSuccess) {
+                    Get.offNamedUntil(
+                      '/payments',
+                      (route) => route.settings.name == '/landing',
+                    );
+                    successToast(msg: 'Payment deleted successfully');
+                  }
+                },
+                builder: (context, state) {
+                  return MyButtonWidget(
+                    onPressed: () => _deletePayment(context),
+                    width: double.infinity,
+                    buttonColor: Colors.red,
+                    isLoading: state is DeletePaymentLoading,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Delete Payment',
+                          style: AppTextStyle.bodyWhite,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _deletePayment(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => DialogConfirmation(
+        title: 'DELETE PAYMENT',
+        text:
+            'Are you sure to delete payment\n"${entity.imageName!.split('-')[0]}" for "${entity.paymentDate!}"?',
+        onClick: () {
+          Get.close(1);
+          context.read<DeletePaymentCubit>().delete(entity.id!);
+        },
       ),
     );
   }

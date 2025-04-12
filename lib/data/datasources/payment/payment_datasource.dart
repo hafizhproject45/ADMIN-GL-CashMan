@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/utils/utility.dart';
-import '../../../domain/entities/payment/payment_entity.dart';
 import '../../../core/errors/exceptions.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/utils/constants.dart';
+import '../../../core/utils/utility.dart';
+import '../../../domain/entities/payment/payment_entity.dart';
 import '../../../presentation/widgets/global/imagePicker_widget.dart';
 import '../../models/payment/payment_model.dart';
 
@@ -50,6 +50,7 @@ class PaymentDatasourceImpl extends PaymentDatasource {
               imageName: imageName,
               imageSize: imageSize,
               paymentDate: request.paymentDate,
+              description: request.description,
               createdAt: request.createdAt,
               updatedAt: request.updatedAt,
             ),

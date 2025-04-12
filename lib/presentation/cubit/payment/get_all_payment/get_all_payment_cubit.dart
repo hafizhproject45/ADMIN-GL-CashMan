@@ -25,18 +25,20 @@ class GetAllPaymentCubit extends Cubit<GetAllPaymentState> {
         List<PaymentEntity> filteredPayments = r;
         if (search != null && search.isNotEmpty) {
           filteredPayments = r
-              .where(
-                (payment) =>
-                    payment.paymentDate!
-                        .toLowerCase()
-                        .contains(search.toLowerCase()) ||
-                    payment.imageName!
-                        .toLowerCase()
-                        .contains(search.toLowerCase()) ||
-                    payment.imageUrl!
-                        .toLowerCase()
-                        .contains(search.toLowerCase()),
-              )
+              .where((payment) =>
+                  payment.paymentDate!
+                      .replaceAll('-', ' | ')
+                      .toLowerCase()
+                      .contains(search.toLowerCase()) ||
+                  payment.imageName!
+                      .split('_')[0]
+                      .replaceAll('-', ' | ')
+                      .toLowerCase()
+                      .contains(search.toLowerCase()) ||
+                  payment.createdAt!
+                      .split(' ')[0]
+                      .toLowerCase()
+                      .contains(search.toLowerCase()))
               .toList();
         }
         emit(GetAllPaymentLoaded(data: filteredPayments));

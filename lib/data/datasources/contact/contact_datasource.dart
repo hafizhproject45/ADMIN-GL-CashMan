@@ -10,7 +10,7 @@ import '../../models/contact/contact_model.dart';
 abstract class ContactDatasource {
   Future<List<ContactEntity>> getContact();
   Future<void> postContact(ContactEntity request);
-  Future<void> updateContact(ContactUpdateEntity request);
+  Future<void> updateContact(UpdateContactEntity request);
   Future<void> deleteContact(int phoneId);
 }
 
@@ -25,7 +25,7 @@ class ContactDatasourceImpl extends ContactDatasource {
   Future<List<ContactEntity>> getContact() async {
     try {
       final res =
-          await supabase.from('contact').select().order('id', ascending: true);
+          await supabase.from('contacts').select().order('id', ascending: true);
 
       return res.map((x) => ContactModel.fromJson(x)).toList();
     } catch (e) {
@@ -36,17 +36,17 @@ class ContactDatasourceImpl extends ContactDatasource {
   @override
   Future<void> postContact(ContactEntity request) async {
     try {
-      await supabase.from('contact').insert(request.toJson());
+      await supabase.from('contacts').insert(request.toJson());
     } catch (e) {
       return _handleException(e);
     }
   }
 
   @override
-  Future<void> updateContact(ContactUpdateEntity request) async {
+  Future<void> updateContact(UpdateContactEntity request) async {
     try {
       await supabase
-          .from('contact')
+          .from('contacts')
           .update(request.toJson())
           .eq('id', request.id!);
     } catch (e) {
@@ -57,7 +57,7 @@ class ContactDatasourceImpl extends ContactDatasource {
   @override
   Future<void> deleteContact(int phoneId) async {
     try {
-      await supabase.from('contact').delete().eq('id', phoneId);
+      await supabase.from('contacts').delete().eq('id', phoneId);
     } catch (e) {
       return _handleException(e);
     }

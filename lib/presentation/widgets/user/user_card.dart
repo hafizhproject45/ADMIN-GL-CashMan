@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_null_comparison
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/text_style.dart';
@@ -8,6 +7,7 @@ import '../../../domain/entities/auth/user_entity.dart';
 
 class UserCard extends StatelessWidget {
   final UserEntity entity;
+  final void Function()? onTap;
   final String name;
   final String block;
   final String email;
@@ -16,6 +16,7 @@ class UserCard extends StatelessWidget {
   const UserCard({
     super.key,
     required this.entity,
+    required this.onTap,
     required this.name,
     required this.block,
     required this.email,
@@ -39,8 +40,7 @@ class UserCard extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: () =>
-            Get.toNamed('/user-detail/${entity.id}', arguments: entity),
+        onTap: onTap,
         child: ListTile(
           leading: Row(
             mainAxisSize: MainAxisSize.min,

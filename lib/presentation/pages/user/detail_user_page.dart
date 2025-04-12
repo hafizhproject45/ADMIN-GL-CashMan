@@ -8,10 +8,10 @@ import '../../../domain/entities/auth/user_entity.dart';
 import '../../../injection_container.dart';
 import '../../cubit/auth/delete_user/delete_user_cubit.dart';
 import '../../cubit/payment/get_all_payment/get_all_payment_cubit.dart';
-import '../../widgets/user/user_history_payment_section.dart';
-import '../../widgets/user/user_button_section.dart';
 import '../../widgets/global/my_app_bar.dart';
+import '../../widgets/user/user_button_section.dart';
 import '../../widgets/user/user_date_section.dart';
+import '../../widgets/user/user_history_payment_section.dart';
 import '../../widgets/user/user_identity_section.dart';
 
 class DetailUserPage extends StatefulWidget {

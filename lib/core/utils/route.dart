@@ -1,21 +1,22 @@
+import 'package:admin_gl_cashman/presentation/pages/user/update_user_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart'
     as get_trans;
 
+import '../../presentation/pages/admin/admin_page.dart';
+import '../../presentation/pages/auth/login_page.dart';
+import '../../presentation/pages/contact/add_update_contact_page.dart';
+import '../../presentation/pages/contact/contacts_page.dart';
 import '../../presentation/pages/contact/detail_contact_page.dart';
-import '../../presentation/pages/contact/add_contact_page.dart';
 import '../../presentation/pages/error/not_found_page.dart';
 import '../../presentation/pages/faq/add_faq_page.dart';
-import '../../presentation/pages/auth/login_page.dart';
-import '../../presentation/pages/payment/payments_page.dart';
-import '../../presentation/pages/payment/add_payment_page.dart';
-import '../../presentation/pages/admin/admin_page.dart';
-import '../../presentation/pages/contact/contacts_page.dart';
 import '../../presentation/pages/faq/detail_faq_page.dart';
 import '../../presentation/pages/faq/faq_page.dart';
 import '../../presentation/pages/images/images_page.dart';
 import '../../presentation/pages/landing_page.dart';
+import '../../presentation/pages/payment/add_payment_page.dart';
 import '../../presentation/pages/payment/detail_payment_page.dart';
+import '../../presentation/pages/payment/payments_page.dart';
 import '../../presentation/pages/user/detail_user_page.dart';
 import '../../presentation/pages/user/users_page.dart';
 
@@ -35,7 +36,7 @@ class AppRoute {
           name: '/landing',
           page: () => const LandingPage(),
           transition: get_trans.Transition.fadeIn,
-          transitionDuration: const Duration(seconds: 2),
+          transitionDuration: const Duration(milliseconds: 1500),
         ),
         GetPage<PaymentsPage>(
           name: '/payments',
@@ -64,6 +65,12 @@ class AppRoute {
         GetPage<DetailUserPage>(
           name: '/user-detail/:id',
           page: () => const DetailUserPage(),
+          transition: get_trans.Transition.topLevel,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage<UpdateUserPage>(
+          name: '/user-update/:id',
+          page: () => UpdateUserPage(),
           transition: get_trans.Transition.topLevel,
           transitionDuration: const Duration(milliseconds: 500),
         ),
@@ -103,9 +110,9 @@ class AppRoute {
           transition: get_trans.Transition.topLevel,
           transitionDuration: const Duration(milliseconds: 500),
         ),
-        GetPage<AddContactPage>(
-          name: '/contact-add',
-          page: () => const AddContactPage(),
+        GetPage<AddUpdateContactPage>(
+          name: '/contact-add-update',
+          page: () => const AddUpdateContactPage(),
           transition: get_trans.Transition.topLevel,
           transitionDuration: const Duration(milliseconds: 500),
         ),

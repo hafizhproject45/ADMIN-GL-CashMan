@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/exceptions.dart';
@@ -30,7 +32,8 @@ class FaqRepositoryImpl extends FaqRepository {
     try {
       final res = await faqDatasource.postFaq(request);
       return Right(res);
-    } catch (e) {
+    } catch (e, s) {
+      log('$e, $s');
       return _handleException(e);
     }
   }

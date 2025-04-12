@@ -22,8 +22,17 @@ class _AdminPageState extends State<AdminPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: const MyAppBar(
+      appBar: MyAppBar(
         title: 'Administrator',
+        leading: IconButton(
+          onPressed: () {
+            Get.offNamedUntil(
+              '/landing',
+              (route) => route.settings.name == '/login',
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: Stack(
         children: [

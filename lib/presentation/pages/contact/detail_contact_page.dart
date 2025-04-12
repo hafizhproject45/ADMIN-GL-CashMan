@@ -1,9 +1,9 @@
-import 'package:admin_gl_cashman/core/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../core/utils/text_style.dart';
+import '../../../core/utils/toast.dart';
 import '../../../core/utils/utility.dart';
 import '../../../domain/entities/contact/contact_entity.dart';
 import '../../../injection_container.dart';
@@ -31,7 +31,7 @@ class _DetailContactPageState extends State<DetailContactPage> {
   }
 
   Widget _content() {
-    final screenWidth = MediaQuery.of(context).size.width;
+    // final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: MyAppBar(
@@ -81,7 +81,7 @@ class _DetailContactPageState extends State<DetailContactPage> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    entity.name!.split('(')[1].split(')')[0],
+                    entity.position!,
                     style: AppTextStyle.bodyBoldPrimary,
                   ),
                   const SizedBox(height: 20),
@@ -137,9 +137,11 @@ class _DetailContactPageState extends State<DetailContactPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        entity.createdAt == entity.updatedAt
+                        Utility.formatDateFromStringToDate(entity.createdAt) !=
+                                Utility.formatDateFromStringToDate(
+                                    entity.updatedAt)
                             ? Utility.formatDateFromStringToDate(
-                                entity.updatedAt!)
+                                entity.updatedAt)
                             : '-',
                         style: AppTextStyle.bodyBoldPrimary,
                       ),
@@ -153,8 +155,17 @@ class _DetailContactPageState extends State<DetailContactPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 MyButtonWidget(
-                  onPressed: () {},
-                  width: screenWidth * 0.44,
+                  onPressed: () {
+                    Get.toNamed('/contact-add-update', arguments: {
+                      'from': 'Update Contact',
+                      'id': entity.id,
+                      'name': entity.name,
+                      'position': entity.position,
+                      'phone': entity.phone,
+                      'created_at': entity.createdAt,
+                    });
+                  },
+                  width: 1,
                   buttonColor: const Color.fromARGB(255, 247, 185, 0),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -176,14 +187,17 @@ class _DetailContactPageState extends State<DetailContactPage> {
                     if (state is DeleteContactFailed) {
                       dangerToast(msg: state.message);
                     } else if (state is DeleteContactSuccess) {
-                      Get.back(result: 'refresh');
+                      Get.offNamedUntil(
+                        '/contacts',
+                        (route) => route.settings.name == '/landing',
+                      );
                       successToast(msg: 'Contact deleted successfully');
                     }
                   },
                   builder: (context, state) {
                     return MyButtonWidget(
                       onPressed: () => _deleteContact(context),
-                      width: screenWidth * 0.44,
+                      width: 1,
                       buttonColor: Colors.red,
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,

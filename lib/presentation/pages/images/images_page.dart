@@ -9,8 +9,8 @@ import '../../../core/utils/utility.dart';
 import '../../../domain/entities/payment/payment_entity.dart';
 import '../../../injection_container.dart';
 import '../../cubit/payment/get_all_payment/get_all_payment_cubit.dart';
-import '../../widgets/global/shimmer/my_shimmer_custom.dart';
 import '../../widgets/global/my_app_bar.dart';
+import '../../widgets/global/shimmer/my_shimmer_custom.dart';
 
 class ImageStoragePage extends StatefulWidget {
   const ImageStoragePage({super.key});
@@ -39,7 +39,18 @@ class _ImageStoragePageState extends State<ImageStoragePage> {
 
   Widget _content(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(title: 'Images'),
+      appBar: MyAppBar(
+        title: 'Images',
+        leading: IconButton(
+          onPressed: () {
+            Get.offNamedUntil(
+              '/landing',
+              (route) => route.settings.name == '/login',
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: SmartRefresher(
         onRefresh: () => _onRefresh(context),
         controller: _refreshController,
@@ -167,15 +178,17 @@ class _ImageStoragePageState extends State<ImageStoragePage> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      Utility.removeStrip(payment.paymentDate),
+                                      payment.paymentDate!
+                                          .replaceAll('-', ' | '),
                                       style: AppTextStyle.bodyBoldPrimary,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      Utility.removeStrip(
-                                          payment.imageName!.split('_')[0]),
+                                      payment.imageName!
+                                          .split('_')[0]
+                                          .replaceAll('-', ' | '),
                                       style: AppTextStyle.mediumThin,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,

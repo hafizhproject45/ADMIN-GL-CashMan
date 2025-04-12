@@ -14,7 +14,14 @@ class PostFaqUsecase implements UseCase<void, FaqEntity> {
 
   @override
   Future<Either<Failure, void>> call(FaqEntity request) async {
-    final result = await faqRepository.postFaq(request);
+    final requestFaq = FaqEntity(
+      question: request.question,
+      answer: request.answer,
+      createdAt: DateTime.now().toIso8601String(),
+      updatedAt: DateTime.now().toIso8601String(),
+    );
+
+    final result = await faqRepository.postFaq(requestFaq);
 
     return result.fold(
       (l) => Left(l),

@@ -8,6 +8,7 @@ class PaymentModel extends PaymentEntity {
     required super.imageName,
     required super.imageSize,
     required super.paymentDate,
+    required super.description,
     required super.createdAt,
     required super.updatedAt,
   });
@@ -20,6 +21,7 @@ class PaymentModel extends PaymentEntity {
       imageName: json['image_name'],
       imageSize: json['image_size'],
       paymentDate: json['payment_date'],
+      description: json['description'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
     );

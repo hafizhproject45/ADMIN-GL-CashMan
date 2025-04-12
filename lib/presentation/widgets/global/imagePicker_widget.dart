@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../core/utils/text_style.dart';
 import '../../../core/utils/colors.dart';
+import '../../../core/utils/text_style.dart';
 import '../../../core/utils/toast.dart';
 
 class ImagePickerWidget extends StatefulWidget {
@@ -33,10 +33,10 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       child: selectedImage != null
           ? Container(
               width: selectedImage != null
-                  ? MediaQuery.of(context).size.width
+                  ? MediaQuery.of(context).size.width * 0.8
                   : 300,
               height: selectedImage != null
-                  ? MediaQuery.of(context).size.width
+                  ? MediaQuery.of(context).size.width * 0.5
                   : 300,
               decoration: selectedImage != null
                   ? BoxDecoration(
@@ -150,9 +150,15 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               activeControlsWidgetColor: AppColor.primary,
               toolbarWidgetColor: Colors.white,
               lockAspectRatio: false,
+              initAspectRatio: CropAspectRatioPreset.original,
+              aspectRatioPresets: [
+                CropAspectRatioPreset.original,
+              ],
             ),
             IOSUiSettings(
               title: 'Crop Image',
+              aspectRatioLockEnabled: true,
+              aspectRatioPickerButtonHidden: true,
             ),
           ],
         );

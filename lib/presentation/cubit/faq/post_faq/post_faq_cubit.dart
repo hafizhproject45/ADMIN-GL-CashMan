@@ -13,7 +13,7 @@ class PostFaqCubit extends Cubit<PostFaqState> {
     required this.postFaqUsecase,
   }) : super(PostFaqInitial());
 
-  Future<void> payment(FaqEntity request) async {
+  Future<void> post(FaqEntity request) async {
     emit(PostFaqLoading());
 
     final result = await postFaqUsecase.call(request);

@@ -73,6 +73,8 @@ class _LoginFormSectionState extends State<LoginFormSection> {
             MyTextFieldPassword(
               textInputAction: TextInputAction.send,
               iconz: Icons.lock,
+              iconColor: Colors.white,
+              textStyle: AppTextStyle.bodyThinWhite,
               controller: _passwordController,
               focusNode: _passwordFocusNode,
               width: screenWidth * 0.85,
@@ -108,8 +110,8 @@ class _LoginFormSectionState extends State<LoginFormSection> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         context.read<LoginCubit>().login(
-                              _emailController.text,
-                              _passwordController.text,
+                              _emailController.text.trim(),
+                              _passwordController.text.trim(),
                             );
                       }
                     }

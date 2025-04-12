@@ -53,8 +53,9 @@ class UserDateSection extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                entity.createdAt == entity.updatedAt
-                    ? Utility.formatDateFromStringToDate(entity.updatedAt!)
+                Utility.formatDateFromStringToDate(entity.createdAt) !=
+                        Utility.formatDateFromStringToDate(entity.updatedAt)
+                    ? Utility.formatDateFromStringToDate(entity.updatedAt)
                     : '-',
                 style: AppTextStyle.bodyBoldPrimary,
               ),

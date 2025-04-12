@@ -13,7 +13,7 @@ class UpdateContactCubit extends Cubit<UpdateContactState> {
     required this.updateContactUsecase,
   }) : super(UpdateContactInitial());
 
-  Future<void> payment(ContactUpdateEntity request) async {
+  Future<void> update(UpdateContactEntity request) async {
     emit(UpdateContactLoading());
 
     final result = await updateContactUsecase.call(request);

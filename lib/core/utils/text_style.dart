@@ -90,10 +90,20 @@ class AppTextStyle {
     fontWeight: FontWeight.w600, // MEDIUM
     color: Colors.white,
   );
+  static const TextStyle bodyThinPrimary = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500, // MEDIUM
+    color: AppColor.primary,
+  );
   static const TextStyle bodyThin = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500, // MEDIUM
     color: AppColor.textSmall,
+  );
+  static const TextStyle bodyThinBlack = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500, // MEDIUM
+    color: Colors.black,
   );
   static const TextStyle bodyThinWhite = TextStyle(
     fontSize: 14,
@@ -134,6 +144,11 @@ class AppTextStyle {
     fontSize: 12,
     fontWeight: FontWeight.w400, // REGULAR
     color: AppColor.white,
+  );
+  static const TextStyle mediumBlack = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400, // REGULAR
+    color: Colors.black,
   );
   static const TextStyle mediumThin = TextStyle(
     fontSize: 12,

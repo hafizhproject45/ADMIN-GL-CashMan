@@ -14,14 +14,28 @@ class GetFaqCubit extends Cubit<GetFaqState> {
     required this.getFaqUsecase,
   }) : super(const GetFaqInitial());
 
-  Future<void> getData() async {
+  Future<void> getData({String? search}) async {
     emit(const GetFaqLoading());
 
     final data = await getFaqUsecase.call(NoParams());
 
     data.fold(
       (l) => emit(GetFaqNotLoaded(message: l.message!)),
-      (r) => emit(GetFaqLoaded(data: r)),
+      (r) {
+        List<FaqEntity> filteredFaq = r;
+        if (search != null && search.isNotEmpty) {
+          filteredFaq = r
+              .where(
+                (faq) =>
+                    faq.question!
+                        .toLowerCase()
+                        .contains(search.toLowerCase()) ||
+                    faq.answer!.toLowerCase().contains(search.toLowerCase()),
+              )
+              .toList();
+        }
+        emit(GetFaqLoaded(data: filteredFaq));
+      },
     );
   }
 }

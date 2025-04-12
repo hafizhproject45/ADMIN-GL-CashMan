@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 
-import '../../entities/auth/update_request_entity.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../entities/auth/update_user_request_entity.dart';
 import '../../repositories/auth/auth_repository.dart';
 
-class UpdateUserUsecase implements UseCase<void, UpdateRequestEntity> {
+class UpdateUserUsecase implements UseCase<void, UpdateUserRequestEntity> {
   final AuthRepository authRepository;
 
   UpdateUserUsecase({
@@ -13,21 +13,13 @@ class UpdateUserUsecase implements UseCase<void, UpdateRequestEntity> {
   });
 
   @override
-  Future<Either<Failure, void>> call(UpdateRequestEntity params) async {
-    final loginDataRequest = await authRepository.getUserID();
-
-    late int userID;
-
-    loginDataRequest.fold(
-      (l) => Left(l),
-      (r) => Right(userID = r),
-    );
-
-    final updateRequest = UpdateRequestEntity(
-      id: userID,
+  Future<Either<Failure, void>> call(UpdateUserRequestEntity params) async {
+    final updateRequest = UpdateUserRequestEntity(
+      id: params.id,
       fullname: params.fullname,
       block: params.block,
       phone: params.phone,
+      createdAt: params.createdAt,
       updatedAt: DateTime.now().toIso8601String(),
     );
 

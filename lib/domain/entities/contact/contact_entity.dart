@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 class ContactEntity extends Equatable {
   final int? id;
   final String? name;
+  final String? position;
   final String? phone;
   final String? createdAt;
   final String? updatedAt;
@@ -11,6 +12,7 @@ class ContactEntity extends Equatable {
   const ContactEntity({
     this.id,
     this.name,
+    this.position,
     this.phone,
     this.createdAt,
     this.updatedAt,
@@ -19,6 +21,7 @@ class ContactEntity extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
+      'position': position,
       'phone': phone,
       'created_at': createdAt,
       'updated_at': updatedAt,
@@ -30,6 +33,7 @@ class ContactEntity extends Equatable {
     return [
       id,
       name,
+      position,
       phone,
       createdAt,
       updatedAt,

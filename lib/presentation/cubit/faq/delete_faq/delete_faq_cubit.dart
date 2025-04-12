@@ -12,7 +12,7 @@ class DeleteFaqCubit extends Cubit<DeleteFaqState> {
     required this.deleteFaqUsecase,
   }) : super(DeleteFaqInitial());
 
-  Future<void> payment(int faqId) async {
+  Future<void> delete(int faqId) async {
     emit(DeleteFaqLoading());
 
     final result = await deleteFaqUsecase.call(faqId);

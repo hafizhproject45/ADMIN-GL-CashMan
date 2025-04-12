@@ -1,8 +1,8 @@
-import '../../../core/utils/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../core/utils/colors.dart';
+import '../../../core/utils/text_style.dart';
 
 class ButtonForGridWidget extends StatelessWidget {
   const ButtonForGridWidget({

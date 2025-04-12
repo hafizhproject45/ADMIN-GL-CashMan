@@ -1,20 +1,22 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../core/utils/colors.dart';
-import '../../widgets/contact/contact_card.dart';
-import '../../../core/utils/utility.dart';
 import '../../../core/utils/text_style.dart';
+import '../../../core/utils/utility.dart';
 import '../../../domain/entities/contact/contact_entity.dart';
 import '../../../injection_container.dart';
 import '../../cubit/contact/get_contact/get_contact_cubit.dart';
+import '../../widgets/contact/contact_card.dart';
 import '../../widgets/global/my_app_bar.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
-import '../../widgets/global/text_field_normal/text_field_normal_widget.dart';
+import '../../widgets/global/text_field_normal/text_field_dropdown_widget.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -26,11 +28,12 @@ class ContactsPage extends StatefulWidget {
 class _ContactsPageState extends State<ContactsPage> {
   final contactCubit = sl<GetContactCubit>();
 
+  final RefreshController _refreshController = RefreshController();
+
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
 
-  final RefreshController _refreshController = RefreshController();
-
+  Timer? _debounce;
   String? searchText;
 
   @override
@@ -38,6 +41,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _searchController.dispose();
     _searchFocusNode.dispose();
     _refreshController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -53,12 +57,22 @@ class _ContactsPageState extends State<ContactsPage> {
     return Scaffold(
       appBar: MyAppBar(
         title: 'Contacts',
+        leading: IconButton(
+          onPressed: () {
+            Get.offNamedUntil(
+              '/landing',
+              (route) => route.settings.name == '/login',
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         action: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
               onPressed: () async {
-                final result = Get.toNamed('/contact-add');
+                final result = Get.toNamed('/contact-add-update',
+                    arguments: {'from': 'Add Contact'});
                 if (result == 'refresh') {
                   await Future.delayed(const Duration(seconds: 1));
                   _onRefresh(context);
@@ -78,8 +92,8 @@ class _ContactsPageState extends State<ContactsPage> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: MyTextFieldNormal(
-                  name: 'Search Contact',
+                child: MyTextFieldDropdown(
+                  name: 'Search',
                   width: double.infinity,
                   focusNode: _searchFocusNode,
                   controller: _searchController,
@@ -88,9 +102,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   iconColor: AppColor.primary,
                   onChanged: (text) {
                     searchText = text;
-                    contactCubit.getData(
-                      search: searchText,
-                    );
+                    _onSearchChanged(text);
                   },
                 ),
               ),
@@ -120,8 +132,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
                         return ContactCard(
                           entity: contact,
-                          name: contact.name!,
-                          phone: contact.phone!,
+                          name: '${contact.name}(${contact.position})',
+                          phone: contact.phone ?? '-',
                           createdAt: Utility.timeAgoFormat(contact.createdAt!),
                         );
                       },
@@ -155,6 +167,15 @@ class _ContactsPageState extends State<ContactsPage> {
         ),
       ),
     );
+  }
+
+  void _onSearchChanged(String text) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      contactCubit.getData(
+        search: text,
+      );
+    });
   }
 
   void _onRefresh(BuildContext context) {

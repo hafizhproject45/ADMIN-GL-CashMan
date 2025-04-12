@@ -1,5 +1,10 @@
+// ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../core/utils/colors.dart';
@@ -9,9 +14,9 @@ import '../../../domain/entities/auth/user_entity.dart';
 import '../../../injection_container.dart';
 import '../../cubit/auth/get_all_user/get_all_user_cubit.dart';
 import '../../widgets/global/my_app_bar.dart';
-import '../../widgets/global/text_field_normal/text_field_normal_widget.dart';
-import '../../widgets/user/user_card.dart';
 import '../../widgets/global/shimmer/my_shimmer_custom.dart';
+import '../../widgets/global/text_field_normal/text_field_dropdown_widget.dart';
+import '../../widgets/user/user_card.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({super.key});
@@ -22,10 +27,12 @@ class UsersPage extends StatefulWidget {
 
 class _UsersPageState extends State<UsersPage> {
   final userCubit = sl<GetAllUserCubit>();
+  final RefreshController _refreshController = RefreshController();
+
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
 
-  final RefreshController _refreshController = RefreshController();
+  Timer? _debounce;
   String? searchText;
 
   @override
@@ -33,6 +40,7 @@ class _UsersPageState extends State<UsersPage> {
     _searchController.dispose();
     _searchFocusNode.dispose();
     _refreshController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -48,7 +56,19 @@ class _UsersPageState extends State<UsersPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: const MyAppBar(title: 'Users'),
+      appBar: MyAppBar(
+        title: 'Users',
+        leading: IconButton(
+          onPressed: () {
+            Get.offNamedUntil(
+              '/landing',
+              (route) => route.settings.name == '/login',
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        action: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
+      ),
       body: SmartRefresher(
         onRefresh: () => _onRefresh(context),
         controller: _refreshController,
@@ -58,8 +78,8 @@ class _UsersPageState extends State<UsersPage> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: MyTextFieldNormal(
-                  name: 'Search User',
+                child: MyTextFieldDropdown(
+                  name: 'Search',
                   width: double.infinity,
                   focusNode: _searchFocusNode,
                   controller: _searchController,
@@ -68,7 +88,7 @@ class _UsersPageState extends State<UsersPage> {
                   iconColor: AppColor.primary,
                   onChanged: (text) {
                     searchText = text;
-                    userCubit.getData(search: searchText);
+                    _onSearchChanged(text);
                   },
                 ),
               ),
@@ -101,6 +121,16 @@ class _UsersPageState extends State<UsersPage> {
                           name: user.fullname,
                           block: user.block,
                           email: user.email,
+                          onTap: () async {
+                            final result = Get.toNamed(
+                                '/user-detail/${user.id}',
+                                arguments: user);
+
+                            if (result == 'refresh') {
+                              await Future.delayed(const Duration(seconds: 1));
+                              _onRefresh(context);
+                            }
+                          },
                           createdAt: Utility.timeAgoFormat(user.createdAt!),
                         );
                       },
@@ -134,6 +164,15 @@ class _UsersPageState extends State<UsersPage> {
         ),
       ),
     );
+  }
+
+  void _onSearchChanged(String text) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      userCubit.getData(
+        search: text,
+      );
+    });
   }
 
   void _onRefresh(BuildContext context) {
